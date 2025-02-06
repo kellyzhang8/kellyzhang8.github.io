@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 import os
 
-author: dict = scholarly.search_author_id('Qi2PSmEAAAAJ')
+author: dict = scholarly.search_author_id('Z9rfcV0AAAAJ&hl=en')
 scholarly.fill(author, sections=['basics', 'indices', 'counts', 'publications'])
 name = author['name']
 author['updated'] = str(datetime.now())
