@@ -7,8 +7,6 @@
 <li> <a href="#" onclick="toggleVis(this); return false;">Show more</a> </li>
 <div id="newsmore" style="display:none"> 
   <li><strong>[Jun. 2021]</strong> I get my bachelor degree in <a href="https://sud.whu.edu.cn/"> School of Urabn Desigh in Wuhan University</a>.</li>
-
-
 </div>
 
 </ul>
