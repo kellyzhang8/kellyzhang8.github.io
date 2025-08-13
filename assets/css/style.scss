@@ -2,3 +2,10 @@
 ---
 
 @import "minimal-light";
+
+.image.avatar img{
+  width: 180px;        /* 圆直径，随意改成你想要的大小 */
+  height: 180px;       /* 保持正方形 */
+  border-radius: 50%;  /* 圆形裁切 */
+  object-fit: cover;   /* 若原图非正方形则自动裁切居中 */
+}
