@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- 原来是 viewBox="0 0 2041.1 350" -->
 <svg xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
      version="1.1"
-     viewBox="0 0 2041.1 350"
-     preserveAspectRatio="xMidYMid meet"
-     style="enable-background:new 0 0 2041.1 350;">
+     viewBox="0 0 1280 300"
+     preserveAspectRatio="xMidYMid meet">
+
   <defs>
     <style>
       .cls-1{fill:none;}
@@ -13,9 +12,10 @@
       .cls-4{fill:#b4b4b6;}   /* 灰 */
       .cls-5{clip-path:url(#clip);}
     </style>
+
+    <!-- clipPath 里矩形尺寸也同步改掉 -->
     <clipPath id="clip">
-      <!-- 裁剪矩形同新 viewBox -->
-      <rect class="cls-1" width="2041.1" height="350"/>
+      <rect class="cls-1" width="1280" height="300"/>
     </clipPath>
   </defs>
 
