@@ -17,6 +17,6 @@ main:
   - title: "Services"
     url: /services/
 
-  # - title: "Teaching"
-  #  url: ./teaching.html
+  - title: "Teaching"
+   url: ./teaching.html
 
