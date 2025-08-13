@@ -5,6 +5,7 @@
 	  position:fixed;
 	  z-index:999;
     width:100%;
+	align-items:center;          /* 让 Logo 垂直居中 */
   }
 
 
@@ -17,9 +18,10 @@
 }
 
   .topnav img {
-    margin-bottom:0pt;
-    margin-top:0pt;
-    margin-left:30%;
+    height:100%;      /* 跟导航条一样高 */
+    width:auto;       /* 宽度按比例自动 */
+    margin:0 0 0 30%; /* 只保留左侧间距，其余为 0 */
+    display:block;    /* 去掉默认行内缝隙 */
   }
   
   /* Style the links inside the navigation bar */
