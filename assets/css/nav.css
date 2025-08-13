@@ -2,8 +2,8 @@
 .topnav {
     background-color: #500000;
     overflow: hidden;
-	  position:fixed;
-	  z-index:999;
+	position:fixed;
+	z-index:999;
     width:100%;
   }
 
@@ -17,8 +17,11 @@
 }
 
   .topnav img {
-    margin:0 0 0 30%; /* 只保留左侧间距，其余为 0 */
+    margin-bottom:0pt;
+    margin-top:10pt;
+    margin-left:30%;
   }
+
   
   /* Style the links inside the navigation bar */
   .topnav a.normal {
