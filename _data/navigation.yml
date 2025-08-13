@@ -7,16 +7,16 @@ main:
   - title: "Home"
     url: /
 
+  - title: "Presentation"
+    url: /presentation/
+    right: true 
+
+  - title: "Awards"
+    url: /awards/
+
+  - title: "Services"
+    url: /services/
+
   # - title: "Teaching"
-  #   url: /teaching/
-  #   right: true 
-
-  # - title: "Services"
-  #   url: /services/
-
-  # - title: "Talks"
-  #   url: /talks/
-
-  #- title: "Teaching"
   #  url: ./teaching.html
 
