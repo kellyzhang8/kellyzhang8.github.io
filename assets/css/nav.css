@@ -18,7 +18,7 @@
 
   .topnav img {
     margin-bottom:0pt;
-    margin-top:10pt;
+    margin-top:0pt;
     margin-left:30%;
 	vertical-align:middle; 
   }
@@ -45,21 +45,21 @@
     margin-right:30%;
   }
 
-  @media print, screen and (max-width: 1000px) { 
+  @media print, screen and (max-width:1000px){
 
-    .topnav img {
-        margin-left:3%;
-      }
-
-    .topnav a.right {
-        margin-right:3%;
-      }
-
-    .topnav a.normal {
-        padding: 10px 5px;
+    .topnav img{
+        margin:0 3%;         
+        vertical-align:middle;
     }
 
-   }
+    .topnav a.right{         
+        margin-right:3%;
+    }
+
+    .topnav a.normal{        
+        padding:0 5px;
+    }
+}
 
    @media print, screen and (max-width: 1200px) and (min-width: 1001px) { 
 
