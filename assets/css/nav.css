@@ -17,10 +17,13 @@
 }
 
   .topnav img {
+    display: block;  
+    height: 100%;     
     margin-bottom:0pt;
     margin-top:0pt;
     margin-left:30%;
 	vertical-align:middle; 
+    padding: 0;        
   }
 
   
