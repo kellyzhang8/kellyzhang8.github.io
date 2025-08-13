@@ -24,7 +24,7 @@
       }
     </style>
     <clipPath id="clippath">
-      <rect class="st0" x="0" y="1.01" width="2041.1" height="350"/>
+      <rect class="st0" x="0" y="1.01" preserveAspectRatio="xMidYMid meet">/>
     </clipPath>
   </defs>
   <g id="Layer_11">
