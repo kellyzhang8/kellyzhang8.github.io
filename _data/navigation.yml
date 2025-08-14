@@ -1,18 +1,16 @@
 main:
-
   - title: "Home"
     url: /
 
-  - title: "Presentation"
-    url: /presentation/
-    right: true 
-
-  - title: "Awards"
-    url: /awards/
+  - title: "Publications"
+    url: /publications/
 
   - title: "Services"
     url: /services/
 
-  - title: "Teaching"
-   url: ./teaching.html
+  - title: "Awards"
+    url: /awards/
 
+  - title: "Presentation"
+    url: /presentation/
+    right: true
