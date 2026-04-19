@@ -14,9 +14,9 @@ profile:
   name: Kelly Zhang
   position: PhD Student
   affiliation: Texas A&M University
-  department: Department of [Your Department]
+  department: Department of Landscape Architecture and Urban Planning
   email: kelly_zhang@tamu.edu
-  office: "[Office / Building, Room #]"
+  office: "Nagle Hall"
   address: "College Station, TX 77843, USA"
   photo: assets/img/profile.svg      # replace with assets/img/profile.jpg once you add a real photo
   cv: assets/files/CV_KellyZhang.pdf
@@ -24,12 +24,12 @@ profile:
 # Social / academic links (leave blank to hide)
 social:
   github:          kellyzhang8
-  google_scholar:  ""       # ←  your Scholar user ID (the `user=` value on your Scholar profile URL). Until you fill it, the icon links to scholar.google.com.
-  linkedin:        ""       # e.g. "kelly-zhang"
-  twitter:         ""       # e.g. "kellyzhang"
-  orcid:           ""       # e.g. "0000-0000-0000-0000"
-  semantic_scholar: ""      # e.g. author id
-  researchgate:    ""       # e.g. "Kelly-Zhang"
+  google_scholar:  "https://scholar.google.com/citations?user=Z9rfcV0AAAAJ&hl=en"       # ←  your Scholar user ID (the `user=` value on your Scholar profile URL). Until you fill it, the icon links to scholar.google.com.
+  linkedin:        "Kaili (Kelly) Zhang"       # e.g. "kelly-zhang"
+  # twitter:         ""       # e.g. "kellyzhang"
+  orcid:           "0009-0002-6776-4382"       # e.g. "0000-0000-0000-0000"
+  # semantic_scholar: ""      # e.g. author id
+  researchgate:    "Kaili Zhang"       # e.g. "Kelly-Zhang"
 
 # ==============================================================================
 # Build settings — do not change unless you know what you're doing
