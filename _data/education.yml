@@ -1,0 +1,16 @@
+# Education — most recent first
+# Leave `advisor` / `note` blank if not applicable.
+
+- date: "2025 – Present"
+  degree: "Ph.D."
+  major: "[Your Major / Program]"
+  school: "Texas A&M University, College Station, TX"
+  advisor: "[Prof. Advisor Name]"
+  note: ""
+
+- date: "2021 – 2025"
+  degree: "B.S."
+  major: "[Your Undergraduate Major]"
+  school: "[Your Undergraduate Institution]"
+  advisor: ""
+  note: "GPA: X.XX / 4.00 · [Honors, if any]"
