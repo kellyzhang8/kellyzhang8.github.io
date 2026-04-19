@@ -79,8 +79,8 @@ h3 { font-size: 1.08rem; margin: .25rem 0 .4rem; }
 }
 .site-brand:hover { border-bottom: none; }
 .brand-logo {
-  width: 100px;
-  height: 40px;
+  width: 180px;
+  height: 80px;
   display: inline-block;
   flex-shrink: 0;
 }
