@@ -25,11 +25,11 @@ profile:
 social:
   github:          "kellyzhang8"
   google_scholar:  "https://scholar.google.com/citations?user=Z9rfcV0AAAAJ&hl=en"       # ←  your Scholar user ID (the `user=` value on your Scholar profile URL). Until you fill it, the icon links to scholar.google.com.
-  linkedin:        "kaili-zhang"       # e.g. "kelly-zhang"
+  linkedin:        "kaili-zhang-966ab42a8"       # e.g. "kelly-zhang"
   # twitter:         ""       # e.g. "kellyzhang"
   # orcid:           "0009-0002-6776-4382"       # e.g. "0000-0000-0000-0000"
   # semantic_scholar: ""      # e.g. author id
-  researchgate:    "Kaili-Zhang"       # e.g. "Kelly-Zhang"
+  researchgate:    "Kaili-Zhang-20"       # e.g. "Kelly-Zhang"
 
 # ==============================================================================
 # Build settings — do not change unless you know what you're doing
