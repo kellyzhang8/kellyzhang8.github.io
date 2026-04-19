@@ -1,16 +1,25 @@
 # Education — most recent first
 # Leave `advisor` / `note` blank if not applicable.
+# Education — most recent first
+# Leave `advisor` / `note` blank if not applicable.
 
-- date: "2025 – Present"
+- date: "2024 – Present"
   degree: "Ph.D."
-  major: "[Your Major / Program]"
+  major: "Urban and Regional Science"
   school: "Texas A&M University, College Station, TX"
-  advisor: "[Prof. Advisor Name]"
+  advisor: "Boqian Xu"
   note: ""
 
-- date: "2021 – 2025"
+- date: "2021 – 2024"
+  degree: "Master"
+  major: "Urban Planning"
+  school: "School of Urban Design, Wuhan University"
+  advisor: "Zhigang Li"
+  note: ""
+
+- date: "2015 – 2020"
   degree: "B.S."
-  major: "[Your Undergraduate Major]"
-  school: "[Your Undergraduate Institution]"
+  major: "Urban Planning"
+  school: "School of Urban Design, Wuhan University"
   advisor: ""
-  note: "GPA: X.XX / 4.00 · [Honors, if any]"
+  note: ""
