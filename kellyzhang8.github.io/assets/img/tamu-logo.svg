@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Unofficial stylized TAMU mark — maroon block with "T" initial and "A&M" subtext. Safe to replace with any official mark you have rights to use. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="8" ry="8" fill="#500000"/>
+  <!-- Block T -->
+  <path d="M14 16 H50 V24 H38 V50 H26 V24 H14 Z" fill="#ffffff"/>
+  <!-- A&M subtext -->
+  <text x="32" y="60" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff"
+        letter-spacing="1">A&amp;M</text>
+</svg>

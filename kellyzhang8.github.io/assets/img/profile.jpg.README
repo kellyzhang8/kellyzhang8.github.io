@@ -1,0 +1,8 @@
+Replace this folder's placeholder `profile.svg` with your own photo:
+
+1. Save your photo as `profile.jpg` (recommended: 500×500 px, square).
+2. Place it in this folder, replacing (or alongside) `profile.svg`.
+3. In `_config.yml` make sure the line reads:
+       photo: assets/img/profile.jpg
+
+That's it — the homepage will pick up the new picture automatically.

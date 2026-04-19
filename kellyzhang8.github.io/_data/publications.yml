@@ -1,0 +1,34 @@
+# Publications — newest first
+# Tip: put your name in **bold** using <strong>Kelly Zhang</strong>
+# Use an asterisk (*) to denote equal contribution.
+
+- title: "[Paper Title — replace me]"
+  authors: "<strong>Kelly Zhang</strong>, Coauthor A, Coauthor B"
+  venue: "Venue / Conference Name"
+  year: 2026
+  note: "Under review"
+  links:
+    - label: "arXiv"
+      url: "#"
+    - label: "Code"
+      url: "#"
+
+- title: "[Second Paper Title]"
+  authors: "Coauthor A, <strong>Kelly Zhang</strong>, Coauthor C"
+  venue: "ACM / IEEE / NeurIPS / ICML / etc."
+  year: 2025
+  note: ""
+  links:
+    - label: "PDF"
+      url: "#"
+    - label: "BibTeX"
+      url: "#"
+
+- title: "[Third Paper Title]"
+  authors: "<strong>Kelly Zhang</strong>*, Coauthor B*, Coauthor C"
+  venue: "Journal of XYZ"
+  year: 2024
+  note: "Oral Presentation"
+  links:
+    - label: "DOI"
+      url: "#"

@@ -1,0 +1,4 @@
+Put your CV PDF in this folder and name it `CV_KellyZhang.pdf`
+(or change the `cv:` line in `_config.yml` to match your filename).
+
+The "Curriculum Vitae" button on the homepage will automatically link to it.

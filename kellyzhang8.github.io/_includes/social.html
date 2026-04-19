@@ -1,0 +1,38 @@
+<ul class="socials">
+  {% if site.profile.email %}
+  <li><a href="mailto:{{ site.profile.email }}" title="Email"><i class="fa-solid fa-envelope"></i></a></li>
+  {% endif %}
+
+  {% if site.social.github and site.social.github != "" %}
+  <li><a href="https://github.com/{{ site.social.github }}" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a></li>
+  {% endif %}
+
+  {%- comment -%}
+    Google Scholar is always shown immediately after GitHub.
+    If `google_scholar` in _config.yml is empty, the icon still appears
+    but links to Google Scholar's homepage — replace the empty value with
+    your author ID (the `user=` query param on your Scholar profile URL).
+  {%- endcomment -%}
+  {% assign gs = site.social.google_scholar | default: "" %}
+  {% if gs != "" %}
+    <li><a href="https://scholar.google.com/citations?user={{ gs }}" target="_blank" title="Google Scholar"><i class="fa-solid fa-graduation-cap"></i></a></li>
+  {% else %}
+    <li><a href="https://scholar.google.com/" target="_blank" title="Google Scholar (set your user ID in _config.yml)"><i class="fa-solid fa-graduation-cap"></i></a></li>
+  {% endif %}
+
+  {% if site.social.linkedin and site.social.linkedin != "" %}
+  <li><a href="https://www.linkedin.com/in/{{ site.social.linkedin }}" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a></li>
+  {% endif %}
+  {% if site.social.twitter and site.social.twitter != "" %}
+  <li><a href="https://twitter.com/{{ site.social.twitter }}" target="_blank" title="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a></li>
+  {% endif %}
+  {% if site.social.orcid and site.social.orcid != "" %}
+  <li><a href="https://orcid.org/{{ site.social.orcid }}" target="_blank" title="ORCID"><i class="fa-brands fa-orcid"></i></a></li>
+  {% endif %}
+  {% if site.social.semantic_scholar and site.social.semantic_scholar != "" %}
+  <li><a href="https://www.semanticscholar.org/author/{{ site.social.semantic_scholar }}" target="_blank" title="Semantic Scholar"><i class="fa-solid fa-s"></i></a></li>
+  {% endif %}
+  {% if site.social.researchgate and site.social.researchgate != "" %}
+  <li><a href="https://www.researchgate.net/profile/{{ site.social.researchgate }}" target="_blank" title="ResearchGate"><i class="fa-brands fa-researchgate"></i></a></li>
+  {% endif %}
+</ul>

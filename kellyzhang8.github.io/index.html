@@ -1,0 +1,144 @@
+---
+layout: default
+title: Home
+---
+
+<!-- =====================  LEFT  —  PROFILE CARD  ===================== -->
+<aside class="profile-card">
+  <img class="avatar" src="{{ site.profile.photo | relative_url }}" alt="{{ site.profile.name }}">
+  <h1 class="name">{{ site.profile.name }}</h1>
+  <p class="position">{{ site.profile.position }}</p>
+  <p class="affil">{{ site.profile.affiliation }}</p>
+  {% if site.profile.department %}<p class="dept">{{ site.profile.department }}</p>{% endif %}
+
+  <ul class="contact">
+    {% if site.profile.email %}
+    <li><i class="fa-solid fa-envelope"></i>
+      <a href="mailto:{{ site.profile.email }}">{{ site.profile.email }}</a>
+    </li>
+    {% endif %}
+    {% if site.profile.office %}
+    <li><i class="fa-solid fa-location-dot"></i> {{ site.profile.office }}</li>
+    {% endif %}
+    {% if site.profile.address %}
+    <li><i class="fa-solid fa-building-columns"></i> {{ site.profile.address }}</li>
+    {% endif %}
+  </ul>
+
+  {% include social.html %}
+
+  {% if site.profile.cv %}
+  <a class="cv-btn" href="{{ site.profile.cv | relative_url }}" target="_blank">
+    <i class="fa-solid fa-file-lines"></i> &nbsp;Curriculum Vitae
+  </a>
+  {% endif %}
+</aside>
+
+<!-- =====================  RIGHT  —  MAIN CONTENT  ===================== -->
+<main class="content">
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      Hi! I am <strong>{{ site.profile.name }}</strong>, a {{ site.profile.position | downcase }} at
+      {{ site.profile.affiliation }}. My research interests lie in
+      <em>[your research interests — e.g., machine learning, optimization, natural language processing]</em>.
+      I am broadly interested in building reliable, efficient, and interpretable systems that
+      bridge theory and real-world applications.
+    </p>
+    <p>
+      Before joining {{ site.profile.affiliation }}, I
+      <em>[brief background — previous school, degree, notable experience]</em>.
+      I am always happy to connect — feel free to reach out via
+      <a href="mailto:{{ site.profile.email }}">email</a>.
+    </p>
+  </section>
+
+  <!-- NEWS -->
+  {% if site.data.news and site.data.news.size > 0 %}
+  <section id="news">
+    <h2>News</h2>
+    <ul class="news-list">
+      {% for item in site.data.news limit: 6 %}
+      <li>
+        <span class="news-date">{{ item.date }}</span>
+        <span class="news-body">{{ item.content | markdownify | remove: '<p>' | remove: '</p>' }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <h2>Education</h2>
+    <ul class="timeline">
+      {% for edu in site.data.education %}
+      <li>
+        <div class="tl-date">{{ edu.date }}</div>
+        <div class="tl-body">
+          <strong>{{ edu.degree }}</strong>
+          {% if edu.major %}, {{ edu.major }}{% endif %}<br>
+          <span class="tl-school">{{ edu.school }}</span>
+          {% if edu.advisor %}<br><small>Advisor: {{ edu.advisor }}</small>{% endif %}
+          {% if edu.note %}<br><small>{{ edu.note }}</small>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- RESEARCH / PROJECTS -->
+  <section id="research">
+    <h2>Research &amp; Projects</h2>
+    <div class="research-grid">
+      {% for proj in site.data.research %}
+      <article class="research-item">
+        {% if proj.image %}
+        <img src="{{ proj.image | relative_url }}" alt="{{ proj.title }}">
+        {% endif %}
+        <div class="research-body">
+          <h3>{{ proj.title }}</h3>
+          <p>{{ proj.description }}</p>
+          {% if proj.links %}
+          <div class="proj-links">
+            {% for link in proj.links %}
+            <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <h2>Publications</h2>
+    <p class="pub-note"><small>
+      <i class="fa-solid fa-asterisk"></i> denotes equal contribution.
+    </small></p>
+    <ol class="pub-list">
+      {% for pub in site.data.publications %}
+      <li class="pub-item">
+        <div class="pub-title">{{ pub.title }}</div>
+        <div class="pub-authors">{{ pub.authors }}</div>
+        <div class="pub-venue">
+          <em>{{ pub.venue }}</em>{% if pub.year %}, {{ pub.year }}{% endif %}.
+          {% if pub.note %}<span class="pub-badge">{{ pub.note }}</span>{% endif %}
+        </div>
+        {% if pub.links %}
+        <div class="pub-links">
+          {% for link in pub.links %}
+          <a href="{{ link.url }}" target="_blank">[{{ link.label }}]</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+</main>

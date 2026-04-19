@@ -1,0 +1,13 @@
+# News / announcements — newest at top
+# Format:
+#   - date: "Mon YYYY"
+#     content: "Short markdown-enabled announcement."
+
+- date: "Apr 2026"
+  content: "Launched my personal homepage — welcome!"
+
+- date: "Feb 2026"
+  content: "Started my PhD journey at Texas A&M University."
+
+# - date: "Jan 2026"
+#   content: "Our paper *[Paper Title](https://arxiv.org/abs/xxxx.xxxxx)* was accepted to **CONF 2026**."
