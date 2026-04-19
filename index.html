@@ -38,22 +38,21 @@ title: Home
 <main class="content">
 
   <!-- ABOUT -->
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      Hi! I am <strong>{{ site.profile.name }}</strong>, a {{ site.profile.position | downcase }} at
-      {{ site.profile.affiliation }}. My research interests lie in
-      <em>[your research interests — e.g., machine learning, optimization, natural language processing]</em>.
-      I am broadly interested in building reliable, efficient, and interpretable systems that
-      bridge theory and real-world applications.
-    </p>
-    <p>
-      Before joining {{ site.profile.affiliation }}, I
-      <em>[brief background — previous school, degree, notable experience]</em>.
-      I am always happy to connect — feel free to reach out via
-      <a href="mailto:{{ site.profile.email }}">email</a>.
-    </p>
-  </section>
+<section id="about">
+  <h2>About</h2>
+  <p>
+    Hi! I am <strong>{{ site.profile.name }}</strong>, a {{ site.profile.position | downcase }} at
+    {{ site.profile.affiliation }}. My research focuses on climate justice, ecological footprint,
+    urban sustainability, and spatial data science. I am particularly interested in understanding
+    how social and spatial inequalities shape environmental outcomes, and in applying quantitative,
+    geospatial, and machine learning methods to urban and regional research.
+  </p>
+  <p>
+    Before joining {{ site.profile.affiliation }}, I earned both my bachelor’s and master’s degrees
+    in Urban Planning from Wuhan University, China. I am always happy to connect — feel free to
+    reach out via <a href="mailto:{{ site.profile.email }}">email</a>.
+  </p>
+</section>
 
   <!-- NEWS -->
   {% if site.data.news and site.data.news.size > 0 %}
