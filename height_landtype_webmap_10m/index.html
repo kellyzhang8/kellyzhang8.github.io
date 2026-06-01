@@ -9,7 +9,7 @@
   <script src="https://unpkg.com/pmtiles@latest/dist/pmtiles.js"></script>
   <style>
     html, body { margin: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }
-    #map { position: absolute; inset: 0; }
+    #map { position: absolute; inset: 0; cursor: crosshair; }
     #panel {
       position: absolute; top: 14px; left: 14px; z-index: 5;
       width: 330px; max-height: calc(100vh - 40px); overflow-y: auto;
@@ -49,7 +49,7 @@
 <div id="panel">
   <h2>Height and Land Type</h2>
   <div class="note">
-    Four projects, 2017–2024. The visible layer uses web-optimized raster PMTiles. Click the map to query the nearest original 10 m prediction cell after the value PMTiles are generated and uploaded.
+    Four projects, 2017–2024. The visible layer uses web-optimized raster PMTiles. Click anywhere inside the selected project boundary to query the nearest original 10 m prediction cell. Land cover is reported as the aggregated five forest-type classes.
   </div>
 
   <div class="row">
@@ -71,7 +71,7 @@
   <label for="layerMode">Layer</label>
   <select id="layerMode">
     <option value="height" selected>Predicted canopy height</option>
-    <option value="landtype">Predicted land cover type</option>
+    <option value="landtype">Forest land-cover type (5 classes)</option>
   </select>
 
   <label for="opacity">Layer opacity</label>
@@ -83,7 +83,7 @@
 
   <button id="zoomBtn">Zoom to selected project</button>
   <div id="status"></div>
-  <div id="queryStatus">Click query: waiting for map click.</div>
+  <div id="queryStatus"><b>Click query: ON.</b> Click inside the selected project boundary to view height and five-class forest type.</div>
 
   <div id="heightLegend" class="legend">
     <b>Height legend</b>
@@ -107,14 +107,24 @@ const PROJECT_META = {
   BN:   { bounds: [-113.60974623355844, 48.16018681374402, -112.74838987279144, 48.99811108867709], center: [-113.17906805317494, 48.579148951210556] }
 };
 
-const LAND_COLORS = {
-  11: '#466b9f', 12: '#d2e6ff', 51: '#b29968', 52: '#d2b48c',
-  61: '#70a800', 62: '#267300', 71: '#d1ff73', 72: '#ffffbe',
-  81: '#e6e600', 82: '#ffcc66', 91: '#b5d29c', 92: '#c7e9b4',
-  121: '#d99282', 122: '#eb0000', 130: '#b3b3b3', 140: '#cccccc',
-  181: '#a87000', 182: '#d7c29e', 183: '#a3cc51', 192: '#7a8ef5',
-  200: '#fafafa', 210: '#141414'
+const FOREST_GROUPS = {
+  1: { label: 'Evergreen broadleaved forest', codes: [51, 52], color: '#1b9e77' },
+  2: { label: 'Evergreen needleleaved forest', codes: [71, 72], color: '#66a61e' },
+  3: { label: 'Deciduous broadleaved forest', codes: [61, 62], color: '#d95f02' },
+  4: { label: 'Deciduous needleleaved forest', codes: [81, 82], color: '#e6ab02' },
+  5: { label: 'Mixed-leaf forest', codes: [91, 92], color: '#7570b3' },
+  0: { label: 'Other / non-forest', codes: [], color: '#d9d9d9' }
 };
+
+function forestGroupFromCode(code) {
+  const c = Number(code);
+  for (const groupId of [1, 2, 3, 4, 5]) {
+    if (FOREST_GROUPS[groupId].codes.includes(c)) {
+      return { id: groupId, ...FOREST_GROUPS[groupId] };
+    }
+  }
+  return { id: 0, ...FOREST_GROUPS[0] };
+}
 
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol('pmtiles', protocol.tile);
@@ -163,10 +173,11 @@ function updateLegend() {
 function buildLandLegend() {
   const grid = document.getElementById('landLegendGrid');
   grid.innerHTML = '';
-  Object.keys(LAND_COLORS).sort((a, b) => Number(a) - Number(b)).forEach(code => {
+  [1, 2, 3, 4, 5, 0].forEach(groupId => {
+    const g = FOREST_GROUPS[groupId];
     const item = document.createElement('div');
     item.className = 'legend-item';
-    item.innerHTML = `<span class="swatch" style="background:${LAND_COLORS[code]}"></span><span>Code ${code}</span>`;
+    item.innerHTML = `<span class="swatch" style="background:${g.color}"></span><span>${g.label}</span>`;
     grid.appendChild(item);
   });
 }
@@ -350,6 +361,7 @@ async function queryOriginalValue(e) {
 
   const height = decodeHeightMm(heightTile, nearest.x, nearest.y);
   const landType = decodeLandType(landTile, nearest.x, nearest.y);
+  const forestGroup = landType === null ? null : forestGroupFromCode(landType);
 
   const html = `
     <b>Nearest original 10 m prediction cell</b><br>
@@ -359,13 +371,13 @@ async function queryOriginalValue(e) {
     <b>Clicked longitude:</b> ${lon.toFixed(6)}<br>
     <b>Clicked latitude:</b> ${lat.toFixed(6)}<br>
     <b>Height:</b> ${height === null ? 'No data' : height.toFixed(3) + ' m'}<br>
-    <b>Land_type:</b> ${landType === null ? 'No data' : landType}<br>
+    <b>Forest type:</b> ${forestGroup === null ? 'No data' : forestGroup.label}<br>
     <b>Query tile:</b> z${QUERY_Z}/${t.tileX}/${t.tileY}<br>
     <b>Nearest pixel distance:</b> ${nearest.distPx.toFixed(2)} px
   `;
 
   new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
-  setQueryStatus(`Value found: height ${height === null ? 'NA' : height.toFixed(3) + ' m'}, Land_type ${landType === null ? 'NA' : landType}.`);
+  setQueryStatus(`Value found: height ${height === null ? 'NA' : height.toFixed(3) + ' m'}, forest type ${forestGroup === null ? 'NA' : forestGroup.label}.`);
 }
 
 map.on('load', () => {
@@ -396,7 +408,7 @@ map.on('load', () => {
     updateBoundaryFilter();
     addRasterLayer();
     if (id === 'project') zoomToProject();
-    setQueryStatus('Click query: ready. Click inside the selected project boundary.');
+    setQueryStatus('<b>Click query: ON.</b> Click inside the selected project boundary to view height and five-class forest type.');
   });
 });
 
