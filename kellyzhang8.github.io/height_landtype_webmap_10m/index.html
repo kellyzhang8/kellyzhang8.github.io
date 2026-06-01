@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Height and Land Type Web Map</title>
+  <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/pmtiles@latest/dist/pmtiles.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }
+    #map { position: absolute; inset: 0; }
+    #panel {
+      position: absolute; top: 14px; left: 14px; z-index: 5;
+      width: 310px; max-height: calc(100vh - 40px); overflow-y: auto;
+      background: rgba(255,255,255,0.96); padding: 14px 15px;
+      border-radius: 10px; box-shadow: 0 3px 15px rgba(0,0,0,0.25);
+    }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    .note { color: #555; font-size: 12px; line-height: 1.4; margin-bottom: 10px; }
+    label { display: block; font-size: 13px; font-weight: 700; margin: 10px 0 4px; }
+    select, input[type="range"] { width: 100%; box-sizing: border-box; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .checks label { display: flex; align-items: center; gap: 6px; font-weight: 400; margin: 7px 0; }
+    button {
+      width: 100%; margin-top: 10px; padding: 7px 8px; border: 1px solid #aaa;
+      border-radius: 6px; background: #f7f7f7; cursor: pointer;
+    }
+    button:hover { background: #eee; }
+    #status { font-size: 12px; color: #333; margin-top: 8px; }
+    .legend { margin-top: 12px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; }
+    .gradient {
+      height: 14px; border-radius: 3px; margin: 6px 0 4px;
+      background: linear-gradient(to right, rgb(44,123,182), rgb(255,255,191), rgb(215,25,28));
+      border: 1px solid #bbb;
+    }
+    .legend-scale { display: flex; justify-content: space-between; color: #555; }
+    .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-top: 6px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .swatch { width: 12px; height: 12px; border: 1px solid #999; display: inline-block; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+<div id="panel">
+  <h2>Height and Land Type</h2>
+  <div class="note">
+    Four projects, 2017–2024. Tiles are web-optimized PMTiles generated from the full point-grid results. Zoom in to inspect the rasterized grid at approximately the original 10 m raster resolution.
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="project">Project</label>
+      <select id="project">
+        <option value="FDL">FDL</option>
+        <option value="KBIC">KBIC</option>
+        <option value="MBCI" selected>MBCI</option>
+        <option value="BN">BN</option>
+      </select>
+    </div>
+    <div>
+      <label for="year">Year</label>
+      <select id="year"></select>
+    </div>
+  </div>
+
+  <label for="layerMode">Layer</label>
+  <select id="layerMode">
+    <option value="height" selected>Predicted canopy height</option>
+    <option value="landtype">Predicted land cover type</option>
+  </select>
+
+  <label for="opacity">Layer opacity</label>
+  <input id="opacity" type="range" min="0" max="1" value="0.86" step="0.05" />
+
+  <div class="checks">
+    <label><input type="checkbox" id="boundaryToggle" checked /> Show project boundary</label>
+  </div>
+
+  <button id="zoomBtn">Zoom to selected project</button>
+  <div id="status"></div>
+
+  <div id="heightLegend" class="legend">
+    <b>Height legend</b>
+    <div class="gradient"></div>
+    <div class="legend-scale"><span>0 m</span><span>12.5 m</span><span>25+ m</span></div>
+  </div>
+
+  <div id="landLegend" class="legend hidden">
+    <b>Land type legend</b>
+    <div class="legend-grid" id="landLegendGrid"></div>
+  </div>
+</div>
+<div id="map"></div>
+
+<script>
+const YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+const PROJECT_META = {
+  FDL:  { bounds: [-92.73378354979789, 46.66512486425341, -92.5965770805736, 46.82672524181355], center: [-92.66518031518575, 46.745925053033474] },
+  KBIC: { bounds: [-88.5519304447342, 46.668480722583375, -88.26223424087075, 46.8809584837631], center: [-88.40708234280248, 46.77471960317324] },
+  MBCI: { bounds: [-90.0322645092616, 31.766077820681023, -88.85235936000481, 33.54198197356312], center: [-89.44231193463321, 32.65402989712207] },
+  BN:   { bounds: [-113.60974623355844, 48.16018681374402, -112.74838987279144, 48.99811108867709], center: [-113.17906805317494, 48.579148951210556] }
+};
+
+const LAND_COLORS = {
+  11: '#466b9f', 12: '#d2e6ff', 51: '#b29968', 52: '#d2b48c',
+  61: '#70a800', 62: '#267300', 71: '#d1ff73', 72: '#ffffbe',
+  81: '#e6e600', 82: '#ffcc66', 91: '#b5d29c', 92: '#c7e9b4',
+  121: '#d99282', 122: '#eb0000', 130: '#b3b3b3', 140: '#cccccc',
+  181: '#a87000', 182: '#d7c29e', 183: '#a3cc51', 192: '#7a8ef5',
+  200: '#fafafa', 210: '#141414'
+};
+
+const protocol = new pmtiles.Protocol();
+maplibregl.addProtocol('pmtiles', protocol.tile);
+
+const yearSelect = document.getElementById('year');
+YEARS.forEach(y => {
+  const opt = document.createElement('option');
+  opt.value = y;
+  opt.textContent = y;
+  if (y === 2024) opt.selected = true;
+  yearSelect.appendChild(opt);
+});
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://demotiles.maplibre.org/style.json',
+  center: PROJECT_META.MBCI.center,
+  zoom: 9.5
+});
+map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+function currentProject() { return document.getElementById('project').value; }
+function currentYear() { return document.getElementById('year').value; }
+function currentLayerMode() { return document.getElementById('layerMode').value; }
+function currentOpacity() { return Number(document.getElementById('opacity').value); }
+function tileFile() { return `data/${currentProject()}_${currentYear()}_${currentLayerMode()}.pmtiles`; }
+
+function setStatus(text) { document.getElementById('status').textContent = text; }
+
+function updateLegend() {
+  const mode = currentLayerMode();
+  document.getElementById('heightLegend').classList.toggle('hidden', mode !== 'height');
+  document.getElementById('landLegend').classList.toggle('hidden', mode !== 'landtype');
+}
+
+function buildLandLegend() {
+  const grid = document.getElementById('landLegendGrid');
+  grid.innerHTML = '';
+  Object.keys(LAND_COLORS).sort((a, b) => Number(a) - Number(b)).forEach(code => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<span class="swatch" style="background:${LAND_COLORS[code]}"></span><span>Code ${code}</span>`;
+    grid.appendChild(item);
+  });
+}
+
+function removeRasterLayer() {
+  if (map.getLayer('prediction-raster')) map.removeLayer('prediction-raster');
+  if (map.getSource('prediction-source')) map.removeSource('prediction-source');
+}
+
+function addRasterLayer() {
+  removeRasterLayer();
+  const url = `pmtiles://${tileFile()}`;
+  map.addSource('prediction-source', {
+    type: 'raster',
+    url: url,
+    tileSize: 256,
+    minzoom: 10,
+    maxzoom: 14
+  });
+  map.addLayer({
+    id: 'prediction-raster',
+    type: 'raster',
+    source: 'prediction-source',
+    paint: { 'raster-opacity': currentOpacity() }
+  }, map.getLayer('boundary-line') ? 'boundary-line' : undefined);
+  setStatus(`Loaded: ${tileFile()}`);
+  updateLegend();
+}
+
+function updateBoundaryFilter() {
+  if (!map.getLayer('boundary-line')) return;
+  const p = currentProject();
+  map.setFilter('boundary-fill', ['==', ['get', 'project'], p]);
+  map.setFilter('boundary-line', ['==', ['get', 'project'], p]);
+  const visible = document.getElementById('boundaryToggle').checked ? 'visible' : 'none';
+  map.setLayoutProperty('boundary-fill', 'visibility', visible);
+  map.setLayoutProperty('boundary-line', 'visibility', visible);
+}
+
+function zoomToProject() {
+  const p = currentProject();
+  const b = PROJECT_META[p].bounds;
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 80, duration: 600 });
+  setTimeout(() => {
+    if (map.getZoom() < 10) map.easeTo({ center: PROJECT_META[p].center, zoom: 10, duration: 500 });
+  }, 650);
+}
+
+map.on('load', () => {
+  map.addSource('boundaries', {
+    type: 'geojson',
+    data: 'data/boundaries.geojson'
+  });
+  map.addLayer({
+    id: 'boundary-fill',
+    type: 'fill',
+    source: 'boundaries',
+    paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.02 }
+  });
+  map.addLayer({
+    id: 'boundary-line',
+    type: 'line',
+    source: 'boundaries',
+    paint: { 'line-color': '#111111', 'line-width': 2.2 }
+  });
+  updateBoundaryFilter();
+  addRasterLayer();
+  zoomToProject();
+});
+
+['project', 'year', 'layerMode'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    updateBoundaryFilter();
+    addRasterLayer();
+    if (id === 'project') zoomToProject();
+  });
+});
+
+document.getElementById('opacity').addEventListener('input', () => {
+  if (map.getLayer('prediction-raster')) {
+    map.setPaintProperty('prediction-raster', 'raster-opacity', currentOpacity());
+  }
+});
+document.getElementById('boundaryToggle').addEventListener('change', updateBoundaryFilter);
+document.getElementById('zoomBtn').addEventListener('click', zoomToProject);
+buildLandLegend();
+</script>
+</body>
+</html>
