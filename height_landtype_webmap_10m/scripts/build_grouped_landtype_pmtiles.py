@@ -49,14 +49,29 @@ YEARS = list(range(2017, 2025))
 ZOOMS = [10, 11, 12, 13, 14]
 TILE_SIZE = 256
 
+# CAT_COLORS follows the manuscript land-type plotting code exactly.
+CAT_COLORS = [
+    "#440154",  # Evergreen broadleaved forest
+    "#3B528B",  # Evergreen needleleaved forest
+    "#21918C",  # Mixed-leaf forest
+    "#5EC962",  # Deciduous broadleaved forest
+    "#FDE725",  # Deciduous needleleaved forest
+]
+
+
+def hex_to_rgba(hex_color: str, alpha: int = 230):
+    h = hex_color.lstrip("#")
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16), alpha)
+
+
 # group id -> RGBA
 GROUP_COLORS = {
-    1: (68, 1, 84, 230),      # Evergreen broadleaved forest, #440154
-    2: (59, 82, 139, 230),    # Evergreen needleleaved forest, #3B528B
-    5: (33, 145, 140, 230),   # Mixed-leaf forest, #21918C
-    3: (94, 201, 98, 230),    # Deciduous broadleaved forest, #5EC962
-    4: (253, 231, 37, 230),   # Deciduous needleleaved forest, #FDE725
-    0: (0, 0, 0, 0),          # Other / non-forest hidden
+    1: hex_to_rgba(CAT_COLORS[0]),  # Evergreen broadleaved forest
+    2: hex_to_rgba(CAT_COLORS[1]),  # Evergreen needleleaved forest
+    5: hex_to_rgba(CAT_COLORS[2]),  # Mixed-leaf forest
+    3: hex_to_rgba(CAT_COLORS[3]),  # Deciduous broadleaved forest
+    4: hex_to_rgba(CAT_COLORS[4]),  # Deciduous needleleaved forest
+    0: (0, 0, 0, 0),                # Other / non-forest hidden
 }
 
 CODE_TO_GROUP = {
