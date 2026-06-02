@@ -16,7 +16,7 @@ Five-class aggregation used here:
     61, 62 -> Deciduous broadleaved forest
     81, 82 -> Deciduous needleleaved forest
     91, 92 -> Mixed-leaf forest
-    all other codes -> Other / non-forest
+    all other codes -> transparent / not displayed
 
 Run from the root of height_landtype_webmap_10m/:
 
@@ -51,12 +51,12 @@ TILE_SIZE = 256
 
 # group id -> RGBA
 GROUP_COLORS = {
-    1: (27, 158, 119, 230),   # Evergreen broadleaved
-    2: (102, 166, 30, 230),   # Evergreen needleleaved
-    3: (217, 95, 2, 230),     # Deciduous broadleaved
-    4: (230, 171, 2, 230),    # Deciduous needleleaved
-    5: (117, 112, 179, 230),  # Mixed-leaf
-    0: (217, 217, 217, 90),   # Other / non-forest
+    1: (68, 1, 84, 230),      # Evergreen broadleaved forest, #440154
+    2: (59, 82, 139, 230),    # Evergreen needleleaved forest, #3B528B
+    5: (33, 145, 140, 230),   # Mixed-leaf forest, #21918C
+    3: (94, 201, 98, 230),    # Deciduous broadleaved forest, #5EC962
+    4: (253, 231, 37, 230),   # Deciduous needleleaved forest, #FDE725
+    0: (0, 0, 0, 0),          # Other / non-forest hidden
 }
 
 CODE_TO_GROUP = {
