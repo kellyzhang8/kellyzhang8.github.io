@@ -38,15 +38,12 @@
     .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
     .swatch { width: 12px; height: 12px; border: 1px solid #999; display: inline-block; }
     .hidden { display: none; }
+    .maplibregl-popup-close-button { display: none; }
   </style>
 </head>
 <body>
 <div id="panel">
   <h2>Height and Land Type</h2>
-  <div class="note">
-    Four projects, 2017–2024. The visible layer uses web-optimized raster PMTiles. Click inside the selected project boundary to query predicted height and five-class forest type. Land cover is reported as the aggregated five forest-type classes.
-  </div>
-
   <div class="row">
     <div>
       <label for="project">Project</label>
@@ -66,7 +63,7 @@
   <label for="layerMode">Layer</label>
   <select id="layerMode">
     <option value="height" selected>Predicted canopy height</option>
-    <option value="landtype">Forest land-cover type (5 classes)</option>
+    <option value="landtype">Forest land-cover type</option>
   </select>
 
   <label for="opacity">Layer opacity</label>
@@ -197,7 +194,6 @@ function addRasterLayer() {
     source: 'prediction-source',
     paint: { 'raster-opacity': currentOpacity() }
   }, map.getLayer('boundary-line') ? 'boundary-line' : undefined);
-  setStatus(`Loaded: ${tileFile()}`);
   updateLegend();
 }
 
@@ -325,7 +321,7 @@ async function queryOriginalValue(e) {
   } catch (err) {
     const msg = `Value PMTiles not found or not uploaded yet for ${project} ${year}.`;
     setQueryStatus(msg);
-    new maplibregl.Popup()
+    new maplibregl.Popup({ closeButton: false })
       .setLngLat(e.lngLat)
       .setHTML(`<b>${msg}</b><br>Expected files:<br>${valuePmtilesPath(project, year, 'height')}<br>${valuePmtilesPath(project, year, 'landtype')}`)
       .addTo(map);
@@ -335,7 +331,7 @@ async function queryOriginalValue(e) {
   if (!heightTile || !landTile) {
     const msg = 'No value tile exists at this clicked location. Try clicking inside the selected project boundary.';
     setQueryStatus(msg);
-    new maplibregl.Popup()
+    new maplibregl.Popup({ closeButton: false })
       .setLngLat(e.lngLat)
       .setHTML(`<b>${msg}</b><br>Project: ${project}<br>Year: ${year}<br>Tile: z${QUERY_Z}/${t.tileX}/${t.tileY}`)
       .addTo(map);
@@ -346,7 +342,7 @@ async function queryOriginalValue(e) {
   if (!nearest) {
     const msg = 'No original 10 m cell found near this click. Zoom in and click closer to a colored grid cell.';
     setQueryStatus(msg);
-    new maplibregl.Popup()
+    new maplibregl.Popup({ closeButton: false })
       .setLngLat(e.lngLat)
       .setHTML(`<b>${msg}</b><br>Project: ${project}<br>Year: ${year}`)
       .addTo(map);
@@ -366,7 +362,7 @@ async function queryOriginalValue(e) {
     <b>Forest type:</b> ${forestGroup === null ? 'No data' : forestGroup.label}
   `;
 
-  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
+  new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setHTML(html).addTo(map);
   setQueryStatus(`Value found: height ${height === null ? 'NA' : height.toFixed(3) + ' m'}, forest type ${forestGroup === null ? 'NA' : forestGroup.label}.`);
 }
 
