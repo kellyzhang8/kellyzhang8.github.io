@@ -192,7 +192,10 @@ function addRasterLayer() {
     id: 'prediction-raster',
     type: 'raster',
     source: 'prediction-source',
-    paint: { 'raster-opacity': currentOpacity() }
+    paint: {
+      'raster-opacity': currentOpacity(),
+      'raster-resampling': 'nearest'
+    }
   }, map.getLayer('boundary-line') ? 'boundary-line' : undefined);
   updateLegend();
 }
