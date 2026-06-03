@@ -33,7 +33,7 @@ YEARS = list(range(2017, 2025))
 ZOOMS = [10, 11, 12, 13, 14]
 TILE_SIZE = 256
 HEIGHT_MIN = 0.0
-HEIGHT_MAX = 25.0
+HEIGHT_MAX = 20.0
 
 # Viridis anchor colors, matching the map code's viridis-style palette.
 VIRIDIS_STOPS = np.array([
