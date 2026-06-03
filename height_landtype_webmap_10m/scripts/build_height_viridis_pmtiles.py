@@ -30,7 +30,7 @@ HEIGHT_PARQUET = RAW_DIR / "Predicted_height_ALL_years_from_saved_model.parquet"
 
 PROJECTS = ["FDL", "KBIC", "MBCI", "BN"]
 YEARS = list(range(2017, 2025))
-ZOOMS = [10, 11, 12, 13, 14]
+ZOOMS = [8, 9, 10, 11, 12, 13, 14]
 TILE_SIZE = 256
 HEIGHT_MIN = 0.0
 HEIGHT_MAX = 20.0
