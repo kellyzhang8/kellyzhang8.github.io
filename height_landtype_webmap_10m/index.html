@@ -124,7 +124,7 @@ maplibregl.addProtocol('pmtiles', protocol.tile);
 const QUERY_Z = 18;
 const TILE_SIZE = 256;
 const HEIGHT_SCALE = 1000.0;
-const SEARCH_RADIUS_PX = 6;
+const SEARCH_RADIUS_PX = 2;
 const VALUE_DIR = 'data/value_pmtiles';
 const valuePmtilesCache = new Map();
 const decodedTileCache = new Map();
@@ -342,17 +342,32 @@ async function queryOriginalValue(e) {
       return;
     }
 
-    const nearest = findNearestValidPixel(heightTile, t.pixelX, t.pixelY, SEARCH_RADIUS_PX);
-    if (!nearest) {
-      new maplibregl.Popup({ closeButton: false })
-        .setLngLat(e.lngLat)
-        .setHTML('No original 10 m cell found near this click.')
-        .addTo(map);
-      return;
+    // Footprint-query logic:
+    // The rebuilt value PMTiles burn each raw center point as a 10 m cell footprint.
+    // Therefore the clicked pixel should be sampled directly.
+    let sampleX = t.pixelX;
+    let sampleY = t.pixelY;
+    let height = decodeHeightMm(heightTile, sampleX, sampleY);
+    let landType = decodeLandType(landTile, sampleX, sampleY);
+    let queryMode = '10 m cell footprint';
+
+    // Fallback only for rare anti-edge / transparent-pixel cases.
+    if (height === null || landType === null) {
+      const nearest = findNearestValidPixel(heightTile, t.pixelX, t.pixelY, SEARCH_RADIUS_PX);
+      if (!nearest) {
+        new maplibregl.Popup({ closeButton: false })
+          .setLngLat(e.lngLat)
+          .setHTML('No original 10 m cell footprint found at this click.')
+          .addTo(map);
+        return;
+      }
+      sampleX = nearest.x;
+      sampleY = nearest.y;
+      height = decodeHeightMm(heightTile, sampleX, sampleY);
+      landType = decodeLandType(landTile, sampleX, sampleY);
+      queryMode = 'nearest fallback';
     }
 
-    const height = decodeHeightMm(heightTile, nearest.x, nearest.y);
-    const landType = decodeLandType(landTile, nearest.x, nearest.y);
     const forestGroup = landType === null ? null : forestGroupFromCode(landType);
 
     const html = `
@@ -365,11 +380,12 @@ async function queryOriginalValue(e) {
     `;
 
     new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setHTML(html).addTo(map);
+    console.log('Click query mode:', queryMode, 'tile pixel:', sampleX, sampleY, 'landtype code:', landType);
   } catch (err) {
     console.error('Click query error:', err);
     new maplibregl.Popup({ closeButton: false })
       .setLngLat(e.lngLat)
-      .setHTML('Value PMTiles not found or could not be read.')
+      .setHTML('Value PMTiles not found or could not be read. Rebuild data/value_pmtiles with the footprint query script.')
       .addTo(map);
   }
 }

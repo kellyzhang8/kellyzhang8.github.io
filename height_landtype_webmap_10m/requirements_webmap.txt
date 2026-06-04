@@ -1,0 +1,6 @@
+pandas
+pyarrow
+numpy
+pillow
+pmtiles
+shapely
