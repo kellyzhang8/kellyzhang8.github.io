@@ -1,0 +1,3 @@
+[build]
+  command = "echo 'Static webmap deploy'"
+  publish = "height_landtype_webmap_10m"
