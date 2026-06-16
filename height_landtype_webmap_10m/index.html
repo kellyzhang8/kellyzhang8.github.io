@@ -4,12 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Carbon Offset Project: Forest Change</title>
-  <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/pmtiles@latest/dist/pmtiles.js"></script>
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.documentElement.classList.add('file-open');
+    }
+  </script>
+  <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/pmtiles@4.4.1/dist/pmtiles.js"></script>
   <style>
     html, body { margin: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }
     #map { position: absolute; inset: 0; cursor: crosshair; }
+    html.file-open #map { display: none; }
     #panel {
       position: absolute; top: 14px; left: 14px; z-index: 5;
       width: 330px; max-height: calc(100vh - 40px); overflow-y: auto;
@@ -35,13 +41,36 @@
     .legend-scale { display: flex; justify-content: space-between; color: #555; }
     .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-top: 6px; }
     .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    #status { margin-top: 10px; font-size: 12px; color: #555; line-height: 1.35; }
+    #status.error { color: #9f1d1d; font-weight: 700; }
     .swatch { width: 12px; height: 12px; border: 1px solid #999; display: inline-block; }
     .hidden { display: none; }
     .maplibregl-popup-close-button { display: none; }
     .maplibregl-popup-content { font-size: 12px; }
+    #fileOpenWarning {
+      display: none; position: fixed; inset: 0; z-index: 20; align-items: center;
+      justify-content: center; background: #eef1f4; color: #111; padding: 24px;
+      box-sizing: border-box;
+    }
+    html.file-open #fileOpenWarning { display: flex; }
+    html.file-open #panel { display: none; }
+    .warning-card {
+      max-width: 560px; background: white; border: 1px solid #c9cdd3;
+      border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.16);
+      padding: 20px 22px; line-height: 1.45;
+    }
+    .warning-card h1 { margin: 0 0 10px; font-size: 20px; }
+    .warning-card code { background: #f2f4f7; padding: 2px 5px; border-radius: 4px; }
   </style>
 </head>
 <body>
+<div id="fileOpenWarning">
+  <div class="warning-card">
+    <h1>Open this map through a local server</h1>
+    <p>This web map cannot load PMTiles data when opened with <code>file://</code>.</p>
+    <p>Use <code>http://localhost:8017/</code> after starting a local preview server from this folder.</p>
+  </div>
+</div>
 <div id="panel">
   <h2>Carbon Offset Project: Forest Change</h2>
 
@@ -86,10 +115,16 @@
     <b>Land type legend</b>
     <div class="legend-grid" id="landLegendGrid"></div>
   </div>
+
+  <div id="status" aria-live="polite"></div>
 </div>
 <div id="map"></div>
 
 <script>
+if (window.location.protocol === 'file:') {
+  throw new Error('Open this map through http://localhost:8017/ instead of file://.');
+}
+
 const YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
 const PROJECT_META = {
@@ -121,14 +156,17 @@ function forestGroupFromCode(code) {
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol('pmtiles', protocol.tile);
 
-const QUERY_Z = 18;
-const BUILD_ID = "clean_rebuild_20260603_233440";
+const QUERY_Z = 16;
+const BUILD_ID = "webmap_fix_20260615_1755";
 const TILE_SIZE = 256;
 const HEIGHT_SCALE = 1000.0;
-const SEARCH_RADIUS_PX = 2;
+const SEARCH_RADIUS_PX = 32;
 const VALUE_DIR = 'data/value_pmtiles';
 const valuePmtilesCache = new Map();
+const registeredPmtilesCache = new Map();
+const byteRangeSupportCache = new Map();
 const decodedTileCache = new Map();
+let rasterLoadToken = 0;
 
 const yearSelect = document.getElementById('year');
 YEARS.forEach(y => {
@@ -153,25 +191,94 @@ const map = new maplibregl.Map({
   center: PROJECT_META.MBCI.center,
   zoom: 9.5
 });
+window.webmap = map;
 map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
 function currentProject() { return document.getElementById('project').value; }
 function currentYear() { return document.getElementById('year').value; }
 function currentLayerMode() { return document.getElementById('layerMode').value; }
 function currentOpacity() { return Number(document.getElementById('opacity').value); }
+function statusEl() { return document.getElementById('status'); }
 
 function tileFile() {
   return `data/${currentProject()}_${currentYear()}_${currentLayerMode()}.pmtiles`;
 }
 
 function toAbsoluteUrl(path) {
-  return new URL(path, window.location.href).href;
+  const url = new URL(path, window.location.href);
+  if (path.startsWith('data/')) {
+    url.searchParams.set('v', BUILD_ID);
+  }
+  return url.href;
 }
 
 function updateLegend() {
   const mode = currentLayerMode();
   document.getElementById('heightLegend').classList.toggle('hidden', mode !== 'height');
   document.getElementById('landLegend').classList.toggle('hidden', mode !== 'landtype');
+}
+
+function setStatus(message, isError = false) {
+  const el = statusEl();
+  el.textContent = message;
+  el.classList.toggle('error', isError);
+}
+
+function isLocalPreviewUrl(url) {
+  const parsed = new URL(url);
+  return ['localhost', '127.0.0.1', '[::1]'].includes(parsed.hostname);
+}
+
+async function supportsByteRange(absolutePath) {
+  if (byteRangeSupportCache.has(absolutePath)) {
+    return byteRangeSupportCache.get(absolutePath);
+  }
+
+  if (isLocalPreviewUrl(absolutePath)) {
+    byteRangeSupportCache.set(absolutePath, false);
+    return false;
+  }
+
+  try {
+    const response = await fetch(absolutePath, {
+      method: 'HEAD',
+      headers: { Range: 'bytes=0-0' }
+    });
+    const supported = response.status === 206 || response.headers.get('Accept-Ranges') === 'bytes';
+    byteRangeSupportCache.set(absolutePath, supported);
+    return supported;
+  } catch (err) {
+    console.warn('Could not check byte-range support; using direct PMTiles fetch.', err);
+    byteRangeSupportCache.set(absolutePath, true);
+    return true;
+  }
+}
+
+async function getPmtilesForPath(relativePath, options = {}) {
+  const showStatus = options.showStatus !== false;
+  const absolutePath = toAbsoluteUrl(relativePath);
+  if (registeredPmtilesCache.has(absolutePath)) {
+    return registeredPmtilesCache.get(absolutePath);
+  }
+
+  if (await supportsByteRange(absolutePath)) {
+    const archive = new pmtiles.PMTiles(absolutePath);
+    protocol.add(archive);
+    registeredPmtilesCache.set(absolutePath, archive);
+    return archive;
+  }
+
+  if (showStatus) setStatus(`Loading local PMTiles: ${relativePath}`);
+  const response = await fetch(absolutePath);
+  if (!response.ok) {
+    throw new Error(`Could not load ${relativePath}: HTTP ${response.status}`);
+  }
+  const blob = await response.blob();
+  const file = new File([blob], absolutePath);
+  const archive = new pmtiles.PMTiles(new pmtiles.FileSource(file));
+  protocol.add(archive);
+  registeredPmtilesCache.set(absolutePath, archive);
+  return archive;
 }
 
 function buildLandLegend() {
@@ -191,14 +298,26 @@ function removeRasterLayer() {
   if (map.getSource('prediction-source')) map.removeSource('prediction-source');
 }
 
-function addRasterLayer() {
+async function addRasterLayer() {
+  const loadToken = ++rasterLoadToken;
   removeRasterLayer();
 
   const relativePath = tileFile();
   const absolutePath = toAbsoluteUrl(relativePath);
   const pmtilesUrl = `pmtiles://${absolutePath}`;
 
+  setStatus(`Loading: ${relativePath}`);
   console.log('Loading visible PMTiles:', pmtilesUrl);
+
+  try {
+    await getPmtilesForPath(relativePath, { showStatus: true });
+  } catch (err) {
+    console.error('Visible PMTiles load error:', err);
+    setStatus(`Could not load ${relativePath}.`, true);
+    return;
+  }
+
+  if (loadToken !== rasterLoadToken) return;
 
   map.addSource('prediction-source', {
     type: 'raster',
@@ -219,6 +338,7 @@ function addRasterLayer() {
   }, map.getLayer('boundary-line') ? 'boundary-line' : undefined);
 
   updateLegend();
+  setStatus(`Loaded: ${relativePath}`);
 }
 
 function updateBoundaryFilter() {
@@ -256,20 +376,20 @@ function valuePmtilesPath(project, year, kind) {
   return `${VALUE_DIR}/${project}_${year}_${kind}_values.pmtiles`;
 }
 
-function getValuePmtiles(project, year, kind) {
+async function getValuePmtiles(project, year, kind) {
   const relativePath = valuePmtilesPath(project, year, kind);
   const absolutePath = toAbsoluteUrl(relativePath);
   if (!valuePmtilesCache.has(absolutePath)) {
-    valuePmtilesCache.set(absolutePath, new pmtiles.PMTiles(absolutePath));
+    valuePmtilesCache.set(absolutePath, getPmtilesForPath(relativePath, { showStatus: false }));
   }
-  return valuePmtilesCache.get(absolutePath);
+  return await valuePmtilesCache.get(absolutePath);
 }
 
 async function getDecodedTile(project, year, kind, z, x, y) {
   const key = `${project}_${year}_${kind}_${z}_${x}_${y}`;
   if (decodedTileCache.has(key)) return decodedTileCache.get(key);
 
-  const pmt = getValuePmtiles(project, year, kind);
+  const pmt = await getValuePmtiles(project, year, kind);
   const tile = await pmt.getZxy(z, x, y);
   if (!tile || !tile.data) return null;
 
@@ -287,27 +407,6 @@ async function getDecodedTile(project, year, kind, z, x, y) {
 
 function pixelIndex(x, y) { return (y * TILE_SIZE + x) * 4; }
 
-function findNearestValidPixel(imageData, px, py, radius) {
-  let best = null;
-  let bestDist2 = Infinity;
-  for (let dy = -radius; dy <= radius; dy++) {
-    for (let dx = -radius; dx <= radius; dx++) {
-      const x = px + dx;
-      const y = py + dy;
-      if (x < 0 || x >= TILE_SIZE || y < 0 || y >= TILE_SIZE) continue;
-      const idx = pixelIndex(x, y);
-      if (imageData.data[idx + 3] > 0) {
-        const dist2 = dx * dx + dy * dy;
-        if (dist2 < bestDist2) {
-          bestDist2 = dist2;
-          best = { x, y };
-        }
-      }
-    }
-  }
-  return best;
-}
-
 function decodeHeightMm(imageData, x, y) {
   const idx = pixelIndex(x, y);
   if (imageData.data[idx + 3] === 0) return null;
@@ -322,6 +421,50 @@ function decodeLandType(imageData, x, y) {
   return imageData.data[idx + 3] === 0 ? null : imageData.data[idx];
 }
 
+async function sampleValueAt(project, year, z, tileX, tileY, pixelX, pixelY) {
+  const [heightTile, landTile] = await Promise.all([
+    getDecodedTile(project, year, 'height', z, tileX, tileY),
+    getDecodedTile(project, year, 'landtype', z, tileX, tileY)
+  ]);
+  if (!heightTile || !landTile) return null;
+
+  const height = decodeHeightMm(heightTile, pixelX, pixelY);
+  const landType = decodeLandType(landTile, pixelX, pixelY);
+  if (height === null || landType === null) return null;
+  return { height, landType, sampleX: pixelX, sampleY: pixelY, tileX, tileY };
+}
+
+async function findNearestValidSample(project, year, tileInfo, radius) {
+  const worldPixels = Math.pow(2, QUERY_Z) * TILE_SIZE;
+  const originX = tileInfo.tileX * TILE_SIZE + tileInfo.pixelX;
+  const originY = tileInfo.tileY * TILE_SIZE + tileInfo.pixelY;
+  const candidates = [];
+
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      candidates.push({ dx, dy, dist2: dx * dx + dy * dy });
+    }
+  }
+  candidates.sort((a, b) => a.dist2 - b.dist2);
+
+  for (const c of candidates) {
+    const gx = originX + c.dx;
+    const gy = originY + c.dy;
+    if (gx < 0 || gx >= worldPixels || gy < 0 || gy >= worldPixels) continue;
+
+    const tileX = Math.floor(gx / TILE_SIZE);
+    const tileY = Math.floor(gy / TILE_SIZE);
+    const pixelX = ((gx % TILE_SIZE) + TILE_SIZE) % TILE_SIZE;
+    const pixelY = ((gy % TILE_SIZE) + TILE_SIZE) % TILE_SIZE;
+
+    const sample = await sampleValueAt(project, year, QUERY_Z, tileX, tileY, pixelX, pixelY);
+    if (sample) {
+      return { ...sample, offsetPx: Math.sqrt(c.dist2) };
+    }
+  }
+  return null;
+}
+
 async function queryOriginalValue(e) {
   const project = currentProject();
   const year = currentYear();
@@ -330,58 +473,35 @@ async function queryOriginalValue(e) {
   const t = lonLatToTilePixel(lon, lat, QUERY_Z);
 
   try {
-    const [heightTile, landTile] = await Promise.all([
-      getDecodedTile(project, year, 'height', QUERY_Z, t.tileX, t.tileY),
-      getDecodedTile(project, year, 'landtype', QUERY_Z, t.tileX, t.tileY)
-    ]);
+    let sample = await sampleValueAt(project, year, QUERY_Z, t.tileX, t.tileY, t.pixelX, t.pixelY);
+    let queryMode = '10 m cell footprint';
 
-    if (!heightTile || !landTile) {
+    if (!sample) {
+      sample = await findNearestValidSample(project, year, t, SEARCH_RADIUS_PX);
+      queryMode = sample ? `nearest 10 m cell (${sample.offsetPx.toFixed(1)} px)` : 'no nearby value';
+    }
+
+    if (!sample) {
       new maplibregl.Popup({ closeButton: false })
         .setLngLat(e.lngLat)
-        .setHTML('No value tile exists at this clicked location.')
+        .setHTML('No original 10 m cell footprint found near this click.')
         .addTo(map);
       return;
     }
 
-    // Footprint-query logic:
-    // The rebuilt value PMTiles burn each raw center point as a 10 m cell footprint.
-    // Therefore the clicked pixel should be sampled directly.
-    let sampleX = t.pixelX;
-    let sampleY = t.pixelY;
-    let height = decodeHeightMm(heightTile, sampleX, sampleY);
-    let landType = decodeLandType(landTile, sampleX, sampleY);
-    let queryMode = '10 m cell footprint';
-
-    // Fallback only for rare anti-edge / transparent-pixel cases.
-    if (height === null || landType === null) {
-      const nearest = findNearestValidPixel(heightTile, t.pixelX, t.pixelY, SEARCH_RADIUS_PX);
-      if (!nearest) {
-        new maplibregl.Popup({ closeButton: false })
-          .setLngLat(e.lngLat)
-          .setHTML('No original 10 m cell footprint found at this click.')
-          .addTo(map);
-        return;
-      }
-      sampleX = nearest.x;
-      sampleY = nearest.y;
-      height = decodeHeightMm(heightTile, sampleX, sampleY);
-      landType = decodeLandType(landTile, sampleX, sampleY);
-      queryMode = 'nearest fallback';
-    }
-
-    const forestGroup = landType === null ? null : forestGroupFromCode(landType);
+    const forestGroup = forestGroupFromCode(sample.landType);
 
     const html = `
       <b>Project:</b> ${project}<br>
       <b>Year:</b> ${year}<br>
       <b>Clicked longitude:</b> ${lon.toFixed(6)}<br>
       <b>Clicked latitude:</b> ${lat.toFixed(6)}<br>
-      <b>Height:</b> ${height === null ? 'No data' : height.toFixed(2) + ' m'}<br>
+      <b>Height:</b> ${sample.height.toFixed(2)} m<br>
       <b>Forest type:</b> ${forestGroup === null ? 'No data' : forestGroup.label}
     `;
 
     new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setHTML(html).addTo(map);
-    console.log('Click query mode:', queryMode, 'tile pixel:', sampleX, sampleY, 'landtype code:', landType);
+    console.log('Click query mode:', queryMode, 'tile pixel:', sample.sampleX, sample.sampleY, 'landtype code:', sample.landType);
   } catch (err) {
     console.error('Click query error:', err);
     new maplibregl.Popup({ closeButton: false })
@@ -391,21 +511,42 @@ async function queryOriginalValue(e) {
   }
 }
 
-map.on('load', () => {
-  map.addSource('boundaries', { type: 'geojson', data: 'data/boundaries.geojson' });
+function initializeMapLayers() {
+  if (map.getSource('boundaries')) return;
 
-  map.addLayer({
-    id: 'boundary-line',
-    type: 'line',
-    source: 'boundaries',
-    paint: { 'line-color': '#111111', 'line-width': 2.1 }
-  });
+  try {
+    map.addSource('boundaries', { type: 'geojson', data: 'data/boundaries.geojson' });
 
-  updateBoundaryFilter();
-  addRasterLayer();
-  zoomToProject();
-  map.on('click', queryOriginalValue);
-});
+    map.addLayer({
+      id: 'boundary-line',
+      type: 'line',
+      source: 'boundaries',
+      paint: { 'line-color': '#111111', 'line-width': 2.1 }
+    });
+
+    updateBoundaryFilter();
+    addRasterLayer();
+    zoomToProject();
+    map.on('click', queryOriginalValue);
+  } catch (err) {
+    console.error('Map initialization error:', err);
+    setStatus('Map is still getting ready. Retrying...', true);
+    setTimeout(waitForMapAndInitialize, 200);
+  }
+}
+
+function waitForMapAndInitialize() {
+  if (map.getSource('boundaries')) return;
+  initializeMapLayers();
+}
+
+if (map.loaded()) {
+  initializeMapLayers();
+} else {
+  map.on('load', initializeMapLayers);
+  setStatus('Preparing map...');
+  setTimeout(waitForMapAndInitialize, 0);
+}
 
 ['project', 'year', 'layerMode'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {

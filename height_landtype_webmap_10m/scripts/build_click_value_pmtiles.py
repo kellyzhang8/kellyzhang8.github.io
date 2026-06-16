@@ -25,10 +25,8 @@ All:
     python scripts/build_click_value_pmtiles.py --all --force
 
 Notes:
-- QUERY_Z defaults to 18 for fine click-query precision. This can create larger
-  value PMTiles than the old z15 point builder.
-- If full rebuild is too slow/large, use --query-z 17 and set QUERY_Z = 17 in
-  index.html too.
+- QUERY_Z defaults to 16, matching index.html. If you change --query-z here,
+  set QUERY_Z in index.html to the same value.
 """
 from __future__ import annotations
 
@@ -53,7 +51,7 @@ LANDTYPE_PARQUET = RAW_DIR / "Predicted_landtype_ALL_years.parquet"
 PROJECTS = ["FDL", "KBIC", "MBCI", "BN"]
 YEARS = list(range(2017, 2025))
 
-QUERY_Z_DEFAULT = 18
+QUERY_Z_DEFAULT = 16
 TILE_SIZE = 256
 HEIGHT_SCALE = 1000.0  # meters -> millimeters in RGB
 CELL_SIZE_M = 10.0     # raw x/y is the center of a 10 m raster cell

@@ -63,6 +63,7 @@ TILE_SIZE = 256
 WEBMERCATOR_HALF_WORLD = 20037508.342789244
 WEBMERCATOR_WORLD = WEBMERCATOR_HALF_WORLD * 2.0
 ALPHA = 230
+GAP_FILL_ITERATIONS = 256
 
 CODE_TO_GROUP = {
     51: 1, 52: 1,
@@ -126,6 +127,58 @@ def png_bytes(rgba: np.ndarray) -> bytes:
     buf = io.BytesIO()
     Image.fromarray(rgba, mode="RGBA").save(buf, format="PNG", compress_level=3)
     return buf.getvalue()
+
+
+def fill_display_gaps(
+    rgba: np.ndarray,
+    fill_mask: np.ndarray,
+    iterations: int = GAP_FILL_ITERATIONS,
+) -> np.ndarray:
+    """Fill display-only transparent gaps inside the project boundary."""
+    img = rgba.copy()
+
+    for _ in range(iterations):
+        alpha = img[..., 3]
+        transparent = (alpha == 0) & fill_mask
+        if not transparent.any():
+            break
+
+        rgb_sum = np.zeros((*alpha.shape, 3), dtype=np.uint16)
+        count = np.zeros(alpha.shape, dtype=np.uint8)
+
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                if dx == 0 and dy == 0:
+                    continue
+
+                src_y0 = max(0, -dy)
+                src_y1 = TILE_SIZE - max(0, dy)
+                src_x0 = max(0, -dx)
+                src_x1 = TILE_SIZE - max(0, dx)
+                dst_y0 = max(0, dy)
+                dst_y1 = TILE_SIZE - max(0, -dy)
+                dst_x0 = max(0, dx)
+                dst_x1 = TILE_SIZE - max(0, -dx)
+
+                src_alpha = alpha[src_y0:src_y1, src_x0:src_x1]
+                valid = src_alpha > 0
+                if not valid.any():
+                    continue
+
+                rgb_sum[dst_y0:dst_y1, dst_x0:dst_x1, :] += (
+                    img[src_y0:src_y1, src_x0:src_x1, :3].astype(np.uint16)
+                    * valid[..., None]
+                )
+                count[dst_y0:dst_y1, dst_x0:dst_x1] += valid.astype(np.uint8)
+
+        fill = transparent & (count > 0)
+        if not fill.any():
+            break
+
+        img[fill, :3] = (rgb_sum[fill] / count[fill, None]).astype(np.uint8)
+        img[fill, 3] = ALPHA
+
+    return img
 
 
 def classify_landtype(codes: np.ndarray) -> np.ndarray:
@@ -222,6 +275,7 @@ def mask_tile_to_boundary(img: np.ndarray, z: int, tx: int, ty: int, boundary_lo
             dtype=bool
         ).reshape((TILE_SIZE, TILE_SIZE))
 
+    img = fill_display_gaps(img, inside)
     img[~inside, :] = 0
     return img
 

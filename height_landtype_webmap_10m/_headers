@@ -1,0 +1,12 @@
+/data/*.pmtiles
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/data/value_pmtiles/*.pmtiles
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
