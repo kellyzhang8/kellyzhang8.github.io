@@ -1,429 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carbon Offset Project: Forest Change</title>
-  <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/pmtiles@latest/dist/pmtiles.js"></script>
-  <style>
-    html, body { margin: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }
-    #map { position: absolute; inset: 0; cursor: crosshair; }
-    #panel {
-      position: absolute; top: 14px; left: 14px; z-index: 5;
-      width: 330px; max-height: calc(100vh - 40px); overflow-y: auto;
-      background: rgba(255,255,255,0.96); padding: 14px 15px;
-      border-radius: 10px; box-shadow: 0 3px 15px rgba(0,0,0,0.25);
-    }
-    h2 { margin: 0 0 8px; font-size: 18px; }
-    label { display: block; font-size: 13px; font-weight: 700; margin: 10px 0 4px; }
-    select, input[type="range"] { width: 100%; box-sizing: border-box; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .checks label { display: flex; align-items: center; gap: 6px; font-weight: 400; margin: 7px 0; }
-    button {
-      width: 100%; margin-top: 10px; padding: 7px 8px; border: 1px solid #aaa;
-      border-radius: 6px; background: #f7f7f7; cursor: pointer;
-    }
-    button:hover { background: #eee; }
-    .legend { margin-top: 12px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; }
-    .gradient {
-      height: 14px; border-radius: 3px; margin: 6px 0 4px;
-      background: linear-gradient(to right, #440154, #3B528B, #21918C, #5EC962, #FDE725);
-      border: 1px solid #bbb;
-    }
-    .legend-scale { display: flex; justify-content: space-between; color: #555; }
-    .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-top: 6px; }
-    .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-    .swatch { width: 12px; height: 12px; border: 1px solid #999; display: inline-block; }
-    .hidden { display: none; }
-    .maplibregl-popup-close-button { display: none; }
-    .maplibregl-popup-content { font-size: 12px; }
-  </style>
-</head>
-<body>
-<div id="panel">
-  <h2>Carbon Offset Project: Forest Change</h2>
+---
+layout: default
+title: Home
+---
 
-  <div class="row">
-    <div>
-      <label for="project">Project</label>
-      <select id="project">
-        <option value="FDL">FDL</option>
-        <option value="KBIC">KBIC</option>
-        <option value="MBCI" selected>MBCI</option>
-        <option value="BN">BN</option>
-      </select>
+<!-- =====================  LEFT  —  PROFILE CARD  ===================== -->
+<aside class="profile-card">
+  <img class="avatar" src="{{ site.profile.photo | relative_url }}" alt="{{ site.profile.name }}">
+  <h1 class="name">{{ site.profile.name }}</h1>
+  <p class="position">{{ site.profile.position }}</p>
+  <p class="affil">{{ site.profile.affiliation }}</p>
+  {% if site.profile.department %}<p class="dept">{{ site.profile.department }}</p>{% endif %}
+
+  <ul class="contact">
+    {% if site.profile.email %}
+    <li><i class="fa-solid fa-envelope"></i>
+      <a href="mailto:{{ site.profile.email }}">{{ site.profile.email }}</a>
+    </li>
+    {% endif %}
+    {% if site.profile.office %}
+    <li><i class="fa-solid fa-location-dot"></i> {{ site.profile.office }}</li>
+    {% endif %}
+    {% if site.profile.address %}
+    <li><i class="fa-solid fa-building-columns"></i> {{ site.profile.address }}</li>
+    {% endif %}
+  </ul>
+
+  {% include social.html %}
+
+  {% if site.profile.cv %}
+  <a class="cv-btn" href="{{ site.profile.cv | relative_url }}" target="_blank">
+    <i class="fa-solid fa-file-lines"></i> &nbsp;Curriculum Vitae
+  </a>
+  {% endif %}
+</aside>
+
+<!-- =====================  RIGHT  —  MAIN CONTENT  ===================== -->
+<main class="content">
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      Hi! I am <strong>{{ site.profile.name }}</strong>, a Ph.D. student at
+      {{ site.profile.affiliation }}. My research interests lie in
+      <em>urban studies, climate justice, ecological footprint, and machine learning</em>.
+      I study how climate, ecological, and socioeconomic processes shape cities and communities,
+      with an emphasis on spatial data science and policy-relevant evidence.
+    </p>
+    <p>
+      Before joining {{ site.profile.affiliation }}, I earned my master's and bachelor's degrees
+      in Urban and Rural Planning from Wuhan University.
+      I am always happy to connect — feel free to reach out via
+      <a href="mailto:{{ site.profile.email }}">email</a>.
+    </p>
+  </section>
+
+  <!-- NEWS -->
+  {% if site.data.news and site.data.news.size > 0 %}
+  <section id="news">
+    <h2>News</h2>
+    <ul class="news-list">
+      {% for item in site.data.news limit: 6 %}
+      <li>
+        <span class="news-date">{{ item.date }}</span>
+        <span class="news-body">{{ item.content | markdownify | remove: '<p>' | remove: '</p>' }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <h2>Education</h2>
+    <ul class="timeline">
+      {% for edu in site.data.education %}
+      <li>
+        <div class="tl-date">{{ edu.date }}</div>
+        <div class="tl-body">
+          <strong>{{ edu.degree }}</strong>
+          {% if edu.major %}, {{ edu.major }}{% endif %}<br>
+          <span class="tl-school">{{ edu.school }}</span>
+          {% if edu.advisor %}<br><small>Advisor: {{ edu.advisor }}</small>{% endif %}
+          {% if edu.note %}<br><small>{{ edu.note }}</small>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- HONORS / GRANTS -->
+  {% if site.data.awards and site.data.awards.size > 0 %}
+  <section id="honors">
+    <h2>Honors &amp; Grants</h2>
+    <ul class="detail-list">
+      {% for award in site.data.awards %}
+      <li>
+        <div class="detail-date">{{ award.date }}</div>
+        <div class="detail-body">
+          <strong>{{ award.title }}</strong>
+          {% if award.detail %}<br><span>{{ award.detail }}</span>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!-- RESEARCH / PROJECTS -->
+  <section id="research">
+    <h2>Research &amp; Projects</h2>
+    <div class="research-grid">
+      {% for proj in site.data.research %}
+      <article class="research-item">
+        {% if proj.image %}
+        <img src="{{ proj.image | relative_url }}" alt="{{ proj.title }}">
+        {% endif %}
+        <div class="research-body">
+          <h3>{{ proj.title }}</h3>
+          <p>{{ proj.description }}</p>
+          {% if proj.links %}
+          <div class="proj-links">
+            {% for link in proj.links %}
+            <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
     </div>
-    <div>
-      <label for="year">Year</label>
-      <select id="year"></select>
-    </div>
-  </div>
+  </section>
 
-  <label for="layerMode">Layer</label>
-  <select id="layerMode">
-    <option value="height" selected>Forest height</option>
-    <option value="landtype">Forest land-cover type</option>
-  </select>
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <h2>Publications</h2>
+    <p class="section-note"><small>
+      Full list available on <a href="https://scholar.google.com/citations?user=Z9rfcV0AAAAJ&hl=en" target="_blank">Google Scholar</a>.
+    </small></p>
+    <ol class="pub-list">
+      {% for pub in site.data.publications %}
+      <li class="pub-item">
+        <div class="pub-title">{{ pub.title }}</div>
+        <div class="pub-authors">{{ pub.authors }}</div>
+        <div class="pub-venue">
+          <em>{{ pub.venue }}</em>{% if pub.year %}, {{ pub.year }}{% endif %}.
+          {% if pub.note %}<span class="pub-badge">{{ pub.note }}</span>{% endif %}
+        </div>
+        {% if pub.links %}
+        <div class="pub-links">
+          {% for link in pub.links %}
+          <a href="{{ link.url }}" target="_blank">[{{ link.label }}]</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
 
-  <label for="opacity">Layer opacity</label>
-  <input id="opacity" type="range" min="0" max="1" value="0.90" step="0.05" />
+  <!-- TALKS -->
+  {% if site.data.talks and site.data.talks.size > 0 %}
+  <section id="talks">
+    <h2>Talks</h2>
+    <ul class="detail-list">
+      {% for talk in site.data.talks %}
+      <li>
+        <div class="detail-date">{{ talk.date }}</div>
+        <div class="detail-body">
+          <strong>{{ talk.title }}</strong><br>
+          <span>{{ talk.venue }}</span>
+          {% if talk.location %}<br><small>{{ talk.location }}</small>{% endif %}
+          {% if talk.type %}<span class="pub-badge">{{ talk.type }}</span>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
 
-  <div class="checks">
-    <label><input type="checkbox" id="boundaryToggle" checked /> Show project boundary</label>
-  </div>
-
-  <button id="zoomBtn">Zoom to selected project</button>
-
-  <div id="heightLegend" class="legend">
-    <b>Height legend</b>
-    <div class="gradient"></div>
-    <div class="legend-scale"><span>0 m</span><span>10 m</span><span>20+ m</span></div>
-  </div>
-
-  <div id="landLegend" class="legend hidden">
-    <b>Land type legend</b>
-    <div class="legend-grid" id="landLegendGrid"></div>
-  </div>
-</div>
-<div id="map"></div>
-
-<script>
-const YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-
-const PROJECT_META = {
-  FDL:  { bounds: [-92.73378354979789, 46.66512486425341, -92.5965770805736, 46.82672524181355], center: [-92.66518031518575, 46.745925053033474] },
-  KBIC: { bounds: [-88.5519304447342, 46.668480722583375, -88.26223424087075, 46.8809584837631], center: [-88.40708234280248, 46.77471960317324] },
-  MBCI: { bounds: [-90.0322645092616, 31.766077820681023, -88.85235936000481, 33.54198197356312], center: [-89.44231193463321, 32.65402989712207] },
-  BN:   { bounds: [-113.60974623355844, 48.16018681374402, -112.74838987279144, 48.99811108867709], center: [-113.17906805317494, 48.579148951210556] }
-};
-
-const FOREST_GROUPS = {
-  1: { label: 'Evergreen broadleaved forest', codes: [51, 52], color: '#440154' },
-  2: { label: 'Evergreen needleleaved forest', codes: [71, 72], color: '#3B528B' },
-  5: { label: 'Mixed-leaf forest', codes: [91, 92], color: '#21918C' },
-  3: { label: 'Deciduous broadleaved forest', codes: [61, 62], color: '#5EC962' },
-  4: { label: 'Deciduous needleleaved forest', codes: [81, 82], color: '#FDE725' }
-};
-const FOREST_LEGEND_ORDER = [1, 2, 5, 3, 4];
-
-function forestGroupFromCode(code) {
-  const c = Number(code);
-  for (const groupId of FOREST_LEGEND_ORDER) {
-    if (FOREST_GROUPS[groupId].codes.includes(c)) {
-      return { id: groupId, ...FOREST_GROUPS[groupId] };
-    }
-  }
-  return null;
-}
-
-const protocol = new pmtiles.Protocol();
-maplibregl.addProtocol('pmtiles', protocol.tile);
-
-const QUERY_Z = 18;
-const TILE_SIZE = 256;
-const HEIGHT_SCALE = 1000.0;
-const SEARCH_RADIUS_PX = 2;
-const VALUE_DIR = 'data/value_pmtiles';
-const valuePmtilesCache = new Map();
-const decodedTileCache = new Map();
-
-const yearSelect = document.getElementById('year');
-YEARS.forEach(y => {
-  const opt = document.createElement('option');
-  opt.value = y;
-  opt.textContent = y;
-  if (y === 2024) opt.selected = true;
-  yearSelect.appendChild(opt);
-});
-
-const blankStyle = {
-  version: 8,
-  sources: {},
-  layers: [
-    { id: 'background', type: 'background', paint: { 'background-color': '#eef1f4' } }
-  ]
-};
-
-const map = new maplibregl.Map({
-  container: 'map',
-  style: blankStyle,
-  center: PROJECT_META.MBCI.center,
-  zoom: 9.5
-});
-map.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-function currentProject() { return document.getElementById('project').value; }
-function currentYear() { return document.getElementById('year').value; }
-function currentLayerMode() { return document.getElementById('layerMode').value; }
-function currentOpacity() { return Number(document.getElementById('opacity').value); }
-
-function tileFile() {
-  return `data/${currentProject()}_${currentYear()}_${currentLayerMode()}.pmtiles`;
-}
-
-function toAbsoluteUrl(path) {
-  return new URL(path, window.location.href).href;
-}
-
-function updateLegend() {
-  const mode = currentLayerMode();
-  document.getElementById('heightLegend').classList.toggle('hidden', mode !== 'height');
-  document.getElementById('landLegend').classList.toggle('hidden', mode !== 'landtype');
-}
-
-function buildLandLegend() {
-  const grid = document.getElementById('landLegendGrid');
-  grid.innerHTML = '';
-  FOREST_LEGEND_ORDER.forEach(groupId => {
-    const g = FOREST_GROUPS[groupId];
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.innerHTML = `<span class="swatch" style="background:${g.color}"></span><span>${g.label}</span>`;
-    grid.appendChild(item);
-  });
-}
-
-function removeRasterLayer() {
-  if (map.getLayer('prediction-raster')) map.removeLayer('prediction-raster');
-  if (map.getSource('prediction-source')) map.removeSource('prediction-source');
-}
-
-function addRasterLayer() {
-  removeRasterLayer();
-
-  const relativePath = tileFile();
-  const absolutePath = toAbsoluteUrl(relativePath);
-  const pmtilesUrl = `pmtiles://${absolutePath}`;
-
-  console.log('Loading visible PMTiles:', pmtilesUrl);
-
-  map.addSource('prediction-source', {
-    type: 'raster',
-    url: pmtilesUrl,
-    tileSize: 256,
-    minzoom: 8,
-    maxzoom: 14
-  });
-
-  map.addLayer({
-    id: 'prediction-raster',
-    type: 'raster',
-    source: 'prediction-source',
-    paint: {
-      'raster-opacity': currentOpacity(),
-      'raster-resampling': 'nearest'
-    }
-  }, map.getLayer('boundary-line') ? 'boundary-line' : undefined);
-
-  updateLegend();
-}
-
-function updateBoundaryFilter() {
-  if (!map.getLayer('boundary-line')) return;
-  const p = currentProject();
-  map.setFilter('boundary-line', ['==', ['get', 'project'], p]);
-  const visible = document.getElementById('boundaryToggle').checked ? 'visible' : 'none';
-  map.setLayoutProperty('boundary-line', 'visibility', visible);
-}
-
-function zoomToProject() {
-  const p = currentProject();
-  const b = PROJECT_META[p].bounds;
-  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 80, duration: 500 });
-  setTimeout(() => {
-    if (map.getZoom() < 8) {
-      map.easeTo({ center: PROJECT_META[p].center, zoom: 8, duration: 350 });
-    }
-  }, 550);
-}
-
-function lonLatToTilePixel(lon, lat, z) {
-  const n = Math.pow(2, z);
-  const xFloat = (lon + 180.0) / 360.0 * n;
-  const latRad = lat * Math.PI / 180.0;
-  const yFloat = (1.0 - Math.asinh(Math.tan(latRad)) / Math.PI) / 2.0 * n;
-  const tileX = Math.floor(xFloat);
-  const tileY = Math.floor(yFloat);
-  const pixelX = Math.max(0, Math.min(TILE_SIZE - 1, Math.floor((xFloat - tileX) * TILE_SIZE)));
-  const pixelY = Math.max(0, Math.min(TILE_SIZE - 1, Math.floor((yFloat - tileY) * TILE_SIZE)));
-  return { tileX, tileY, pixelX, pixelY };
-}
-
-function valuePmtilesPath(project, year, kind) {
-  return `${VALUE_DIR}/${project}_${year}_${kind}_values.pmtiles`;
-}
-
-function getValuePmtiles(project, year, kind) {
-  const relativePath = valuePmtilesPath(project, year, kind);
-  const absolutePath = toAbsoluteUrl(relativePath);
-  if (!valuePmtilesCache.has(absolutePath)) {
-    valuePmtilesCache.set(absolutePath, new pmtiles.PMTiles(absolutePath));
-  }
-  return valuePmtilesCache.get(absolutePath);
-}
-
-async function getDecodedTile(project, year, kind, z, x, y) {
-  const key = `${project}_${year}_${kind}_${z}_${x}_${y}`;
-  if (decodedTileCache.has(key)) return decodedTileCache.get(key);
-
-  const pmt = getValuePmtiles(project, year, kind);
-  const tile = await pmt.getZxy(z, x, y);
-  if (!tile || !tile.data) return null;
-
-  const blob = new Blob([tile.data], { type: 'image/png' });
-  const bitmap = await createImageBitmap(blob);
-  const canvas = document.createElement('canvas');
-  canvas.width = TILE_SIZE;
-  canvas.height = TILE_SIZE;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.drawImage(bitmap, 0, 0);
-  const imageData = ctx.getImageData(0, 0, TILE_SIZE, TILE_SIZE);
-  decodedTileCache.set(key, imageData);
-  return imageData;
-}
-
-function pixelIndex(x, y) { return (y * TILE_SIZE + x) * 4; }
-
-function findNearestValidPixel(imageData, px, py, radius) {
-  let best = null;
-  let bestDist2 = Infinity;
-  for (let dy = -radius; dy <= radius; dy++) {
-    for (let dx = -radius; dx <= radius; dx++) {
-      const x = px + dx;
-      const y = py + dy;
-      if (x < 0 || x >= TILE_SIZE || y < 0 || y >= TILE_SIZE) continue;
-      const idx = pixelIndex(x, y);
-      if (imageData.data[idx + 3] > 0) {
-        const dist2 = dx * dx + dy * dy;
-        if (dist2 < bestDist2) {
-          bestDist2 = dist2;
-          best = { x, y };
-        }
-      }
-    }
-  }
-  return best;
-}
-
-function decodeHeightMm(imageData, x, y) {
-  const idx = pixelIndex(x, y);
-  if (imageData.data[idx + 3] === 0) return null;
-  const r = imageData.data[idx];
-  const g = imageData.data[idx + 1];
-  const b = imageData.data[idx + 2];
-  return (r * 65536 + g * 256 + b) / HEIGHT_SCALE;
-}
-
-function decodeLandType(imageData, x, y) {
-  const idx = pixelIndex(x, y);
-  return imageData.data[idx + 3] === 0 ? null : imageData.data[idx];
-}
-
-async function queryOriginalValue(e) {
-  const project = currentProject();
-  const year = currentYear();
-  const lon = e.lngLat.lng;
-  const lat = e.lngLat.lat;
-  const t = lonLatToTilePixel(lon, lat, QUERY_Z);
-
-  try {
-    const [heightTile, landTile] = await Promise.all([
-      getDecodedTile(project, year, 'height', QUERY_Z, t.tileX, t.tileY),
-      getDecodedTile(project, year, 'landtype', QUERY_Z, t.tileX, t.tileY)
-    ]);
-
-    if (!heightTile || !landTile) {
-      new maplibregl.Popup({ closeButton: false })
-        .setLngLat(e.lngLat)
-        .setHTML('No value tile exists at this clicked location.')
-        .addTo(map);
-      return;
-    }
-
-    // Footprint-query logic:
-    // The rebuilt value PMTiles burn each raw center point as a 10 m cell footprint.
-    // Therefore the clicked pixel should be sampled directly.
-    let sampleX = t.pixelX;
-    let sampleY = t.pixelY;
-    let height = decodeHeightMm(heightTile, sampleX, sampleY);
-    let landType = decodeLandType(landTile, sampleX, sampleY);
-    let queryMode = '10 m cell footprint';
-
-    // Fallback only for rare anti-edge / transparent-pixel cases.
-    if (height === null || landType === null) {
-      const nearest = findNearestValidPixel(heightTile, t.pixelX, t.pixelY, SEARCH_RADIUS_PX);
-      if (!nearest) {
-        new maplibregl.Popup({ closeButton: false })
-          .setLngLat(e.lngLat)
-          .setHTML('No original 10 m cell footprint found at this click.')
-          .addTo(map);
-        return;
-      }
-      sampleX = nearest.x;
-      sampleY = nearest.y;
-      height = decodeHeightMm(heightTile, sampleX, sampleY);
-      landType = decodeLandType(landTile, sampleX, sampleY);
-      queryMode = 'nearest fallback';
-    }
-
-    const forestGroup = landType === null ? null : forestGroupFromCode(landType);
-
-    const html = `
-      <b>Project:</b> ${project}<br>
-      <b>Year:</b> ${year}<br>
-      <b>Clicked longitude:</b> ${lon.toFixed(6)}<br>
-      <b>Clicked latitude:</b> ${lat.toFixed(6)}<br>
-      <b>Height:</b> ${height === null ? 'No data' : height.toFixed(2) + ' m'}<br>
-      <b>Forest type:</b> ${forestGroup === null ? 'No data' : forestGroup.label}
-    `;
-
-    new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setHTML(html).addTo(map);
-    console.log('Click query mode:', queryMode, 'tile pixel:', sampleX, sampleY, 'landtype code:', landType);
-  } catch (err) {
-    console.error('Click query error:', err);
-    new maplibregl.Popup({ closeButton: false })
-      .setLngLat(e.lngLat)
-      .setHTML('Value PMTiles not found or could not be read. Rebuild data/value_pmtiles with the footprint query script.')
-      .addTo(map);
-  }
-}
-
-map.on('load', () => {
-  map.addSource('boundaries', { type: 'geojson', data: 'data/boundaries.geojson' });
-
-  map.addLayer({
-    id: 'boundary-line',
-    type: 'line',
-    source: 'boundaries',
-    paint: { 'line-color': '#111111', 'line-width': 2.1 }
-  });
-
-  updateBoundaryFilter();
-  addRasterLayer();
-  zoomToProject();
-  map.on('click', queryOriginalValue);
-});
-
-['project', 'year', 'layerMode'].forEach(id => {
-  document.getElementById(id).addEventListener('change', () => {
-    updateBoundaryFilter();
-    addRasterLayer();
-    if (id === 'project') zoomToProject();
-  });
-});
-
-document.getElementById('opacity').addEventListener('input', () => {
-  if (map.getLayer('prediction-raster')) {
-    map.setPaintProperty('prediction-raster', 'raster-opacity', currentOpacity());
-  }
-});
-
-document.getElementById('boundaryToggle').addEventListener('change', updateBoundaryFilter);
-document.getElementById('zoomBtn').addEventListener('click', zoomToProject);
-
-buildLandLegend();
-</script>
-</body>
-</html>
+</main>

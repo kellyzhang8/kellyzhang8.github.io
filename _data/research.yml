@@ -1,29 +1,14 @@
 # Research / Projects — highlight 2–6 items
 # Each item can show a thumbnail image (optional), title, description, and links.
 
-- title: "[Project 1 Title]"
-  description: "A one-sentence description of what this project is about — the problem, your approach, and the key finding or contribution."
-  image: "assets/img/project1.jpg"   # place 600x400 px thumbnail here; or comment out this line
+- title: "GeoAgent4Disaster"
+  description: "An autonomous multi-agent framework for multimodal disaster assessment, developed as an accepted NSF I-GUIDE Spatial AI Challenge project."
   links:
-    - label: "Paper"
-      url: "#"
-    - label: "Code"
-      url: "#"
-    - label: "Website"
-      url: "#"
+    - label: "Project"
+      url: "https://iguide.illinois.edu/"
 
-- title: "[Project 2 Title]"
-  description: "Short summary of the project: context, method, result."
-  image: "assets/img/project2.jpg"
-  links:
-    - label: "Paper"
-      url: "#"
-    - label: "Code"
-      url: "#"
+- title: "Climate Justice Indicators and Actions"
+  description: "A systematic literature review on how climate justice is measured, operationalized, and translated into urban and regional action."
 
-- title: "[Project 3 Title]"
-  description: "Short summary of the project."
-  # image: "assets/img/project3.jpg"
-  links:
-    - label: "Demo"
-      url: "#"
+- title: "Neighborhood Ecological Footprint"
+  description: "A spatial analysis of ecological footprint patterns across villages, towns, cities, and suburbs in the United States."
