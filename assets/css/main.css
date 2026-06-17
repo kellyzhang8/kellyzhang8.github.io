@@ -1,15 +1,15 @@
 :root {
-  --bg: #fbfaf7;
+  --bg: #ffffff;
   --paper: #ffffff;
-  --paper-soft: #f7f3ed;
+  --paper-soft: #f8f8f8;
   --text: #272727;
   --muted: #6f756f;
-  --line: #e8dfd5;
+  --line: #e5e0da;
   --accent: #500000;
   --accent-dark: #360000;
   --gold: #d6a642;
   --green: #456d59;
-  --shadow: 0 6px 22px rgba(80, 0, 0, 0.055);
+  --shadow: none;
   --radius: 10px;
   --maxw: 1080px;
   --serif: 'Lora', Georgia, 'Times New Roman', serif;
@@ -82,7 +82,7 @@ h3 {
   top: 0;
   z-index: 20;
   border-bottom: 1px solid rgba(232, 223, 213, 0.85);
-  background: rgba(253, 251, 247, 0.88);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
 }
@@ -150,7 +150,7 @@ h3 {
   text-align: center;
   border: 1px solid rgba(232, 223, 213, 0.92);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.9);
+  background: #fff;
   box-shadow: var(--shadow);
 }
 
@@ -289,7 +289,6 @@ h3 {
 .news-list,
 .cv-list,
 .award-list,
-.project-list,
 .timeline,
 .publication-list {
   margin: 0;
@@ -299,7 +298,6 @@ h3 {
 .news-list,
 .cv-list,
 .award-list,
-.project-list,
 .timeline {
   list-style: none;
 }
@@ -310,7 +308,7 @@ h3 {
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.7);
+  background: #fff;
   font-size: 0.88rem;
   scrollbar-width: thin;
 }
@@ -467,40 +465,6 @@ h3 {
   font-size: 0.92rem;
 }
 
-.project-list {
-  display: grid;
-  gap: 0.42rem;
-  font-size: 0.92rem;
-}
-
-.project-list li {
-  display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
-  gap: 0.72rem;
-  padding: 0.38rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.project-list li:last-child {
-  border-bottom: 0;
-}
-
-.project-date {
-  color: var(--accent);
-  font-weight: 900;
-}
-
-.project-body {
-  min-width: 0;
-}
-
-.project-detail {
-  display: block;
-  margin-top: 0.16rem;
-  color: var(--muted);
-  line-height: 1.45;
-}
-
 .award-list li {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
@@ -547,20 +511,6 @@ h3 {
   text-align: center;
 }
 
-.visitor-map-card {
-  display: flex;
-  justify-content: center;
-  padding: 0.6rem 0 0.4rem;
-}
-
-.visitor-map-card img {
-  display: block;
-  width: min(560px, 100%);
-  height: auto;
-  border: 1px solid var(--line);
-  background: #eeeeec;
-}
-
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
@@ -595,7 +545,6 @@ h3 {
 
   .news-list li,
   .award-list li,
-  .project-list li,
   .timeline li {
     grid-template-columns: 1fr;
     gap: 0.25rem;
