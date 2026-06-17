@@ -103,7 +103,7 @@ h3 {
 }
 
 .brand-logo {
-  width: 104px;
+  width: 126px;
   height: auto;
   border-radius: 0;
   object-fit: contain;
@@ -119,7 +119,7 @@ h3 {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 0.5rem 1.15rem;
+  gap: 0.42rem 0.92rem;
 }
 
 .site-nav a {
@@ -489,6 +489,13 @@ h3 {
 
 .project-body {
   min-width: 0;
+}
+
+.project-detail {
+  display: block;
+  margin-top: 0.16rem;
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .award-list li {
