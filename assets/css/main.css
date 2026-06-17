@@ -103,7 +103,7 @@ h3 {
 }
 
 .brand-logo {
-  width: 78px;
+  width: 104px;
   height: auto;
   border-radius: 0;
   object-fit: contain;
@@ -286,6 +286,7 @@ h3 {
 .news-list,
 .cv-list,
 .award-list,
+.project-list,
 .timeline,
 .publication-list {
   margin: 0;
@@ -295,6 +296,7 @@ h3 {
 .news-list,
 .cv-list,
 .award-list,
+.project-list,
 .timeline {
   list-style: none;
 }
@@ -462,6 +464,33 @@ h3 {
   font-size: 0.92rem;
 }
 
+.project-list {
+  display: grid;
+  gap: 0.42rem;
+  font-size: 0.92rem;
+}
+
+.project-list li {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  gap: 0.72rem;
+  padding: 0.38rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-list li:last-child {
+  border-bottom: 0;
+}
+
+.project-date {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.project-body {
+  min-width: 0;
+}
+
 .award-list li {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
@@ -542,6 +571,7 @@ h3 {
 
   .news-list li,
   .award-list li,
+  .project-list li,
   .timeline li {
     grid-template-columns: 1fr;
     gap: 0.25rem;
