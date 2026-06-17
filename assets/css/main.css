@@ -1,7 +1,7 @@
 :root {
-  --bg: #fdfbf7;
+  --bg: #fbfaf7;
   --paper: #ffffff;
-  --paper-soft: #fbf7f0;
+  --paper-soft: #f7f3ed;
   --text: #272727;
   --muted: #6f756f;
   --line: #e8dfd5;
@@ -9,9 +9,9 @@
   --accent-dark: #360000;
   --gold: #d6a642;
   --green: #456d59;
-  --shadow: 0 18px 45px rgba(80, 0, 0, 0.08);
-  --radius: 18px;
-  --maxw: 1180px;
+  --shadow: 0 6px 22px rgba(80, 0, 0, 0.055);
+  --radius: 10px;
+  --maxw: 1080px;
   --serif: 'Lora', Georgia, 'Times New Roman', serif;
   --sans: 'Source Sans 3', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -24,27 +24,17 @@ html {
 
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at top left, rgba(214, 166, 66, 0.16), transparent 34rem),
-    linear-gradient(180deg, #fffdf8 0%, var(--bg) 44%, #f8f3ec 100%);
+  background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.62;
+  font-size: 15px;
+  line-height: 1.52;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(80, 0, 0, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(80, 0, 0, 0.035) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent 72%);
+  content: none;
 }
 
 a {
@@ -65,9 +55,9 @@ h1, h2, h3 {
 h2 {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin: 2.35rem 0 1rem;
-  font-size: 1.62rem;
+  gap: 0.65rem;
+  margin: 1.45rem 0 0.62rem;
+  font-size: 1.36rem;
 }
 
 h2::after {
@@ -78,8 +68,8 @@ h2::after {
 }
 
 h3 {
-  margin: 0.15rem 0 0.35rem;
-  font-size: 1.08rem;
+  margin: 0.08rem 0 0.22rem;
+  font-size: 1rem;
 }
 
 .container {
@@ -102,18 +92,18 @@ h3 {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 64px;
+  min-height: 54px;
 }
 
 .site-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.8rem;
   color: #191919;
 }
 
 .brand-logo {
-  width: 58px;
+  width: 78px;
   height: auto;
   border-radius: 0;
   object-fit: contain;
@@ -121,7 +111,7 @@ h3 {
 
 .site-title {
   font-family: var(--serif);
-  font-size: 1.18rem;
+  font-size: 1.06rem;
   font-weight: 700;
 }
 
@@ -134,7 +124,7 @@ h3 {
 
 .site-nav a {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -143,28 +133,28 @@ h3 {
 .layout {
   position: relative;
   width: min(var(--maxw), calc(100% - 2rem));
-  margin: 2.3rem auto 0;
+  margin: 1.45rem auto 0;
   display: grid;
-  grid-template-columns: 290px minmax(0, 1fr);
-  gap: 3rem;
+  grid-template-columns: 245px minmax(0, 1fr);
+  gap: 2.1rem;
   align-items: start;
 }
 
 .profile-card {
   position: sticky;
-  top: 88px;
-  padding: 1.6rem 1.25rem 1.35rem;
+  top: 74px;
+  padding: 1.1rem 1rem 1rem;
   text-align: center;
   border: 1px solid rgba(232, 223, 213, 0.92);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--shadow);
 }
 
 .avatar {
-  width: 172px;
-  height: 172px;
-  margin-bottom: 1rem;
+  width: 138px;
+  height: 138px;
+  margin-bottom: 0.75rem;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #fff;
@@ -172,8 +162,8 @@ h3 {
 }
 
 .name {
-  margin: 0 0 0.2rem;
-  font-size: 1.38rem;
+  margin: 0 0 0.12rem;
+  font-size: 1.2rem;
 }
 
 .position {
@@ -186,7 +176,7 @@ h3 {
 .dept {
   margin: 0.12rem 0;
   color: var(--muted);
-  font-size: 0.93rem;
+  font-size: 0.88rem;
 }
 
 .contact,
@@ -196,10 +186,10 @@ h3 {
 }
 
 .contact {
-  margin: 1.05rem 0 0.7rem;
+  margin: 0.88rem 0 0.55rem;
   text-align: left;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.86rem;
 }
 
 .contact li {
@@ -219,16 +209,16 @@ h3 {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.7rem;
-  margin: 1.05rem 0 1.2rem;
+  gap: 0.52rem;
+  margin: 0.82rem 0 0.9rem;
 }
 
 .socials a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 31px;
+  height: 31px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--paper-soft);
@@ -247,7 +237,7 @@ h3 {
   align-items: center;
   gap: 0.55rem;
   width: 100%;
-  padding: 0.7rem 1rem;
+  padding: 0.56rem 0.9rem;
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
@@ -261,19 +251,19 @@ h3 {
 
 .content {
   min-width: 0;
-  padding-bottom: 4rem;
+  padding-bottom: 3rem;
 }
 
 .content section {
-  margin-bottom: 2.35rem;
+  margin-bottom: 1.45rem;
 }
 
 .intro-section {
-  padding: 1.55rem 1.65rem;
-  border: 1px solid rgba(232, 223, 213, 0.92);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: var(--shadow);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .intro-section h2 { margin-top: 0.25rem; }
@@ -281,7 +271,7 @@ h3 {
 .eyebrow {
   margin: 0;
   color: var(--green);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -290,7 +280,7 @@ h3 {
 .updated,
 .section-note {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
 }
 
 .news-list,
@@ -310,35 +300,46 @@ h3 {
 }
 
 .news-list {
-  display: grid;
-  gap: 0.72rem;
+  max-height: 132px;
+  overflow-y: auto;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.88rem;
+  scrollbar-width: thin;
 }
 
 .news-list li {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
-  gap: 0.9rem;
-  padding: 0.68rem 0;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 0.58rem;
+  padding: 0.3rem 0;
   border-bottom: 1px dashed var(--line);
+}
+
+.news-list li:last-child {
+  border-bottom: 0;
 }
 
 .news-date {
   color: var(--accent);
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .publication-list {
   display: grid;
-  gap: 1.05rem;
+  gap: 0.82rem;
   list-style: none;
 }
 
 .publication-item {
   display: grid;
-  grid-template-columns: 136px minmax(0, 1fr);
-  gap: 1.05rem;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 0.82rem;
   align-items: start;
-  padding: 0 0 1.05rem;
+  padding: 0 0 0.82rem;
   border-bottom: 1px solid var(--line);
 }
 
@@ -350,10 +351,10 @@ h3 {
 .pub-figure {
   display: block;
   overflow: hidden;
-  width: 136px;
-  height: 92px;
+  width: 112px;
+  height: 76px;
   border: 1px solid var(--line);
-  border-radius: 5px;
+  border-radius: 4px;
   background: #f5efe7;
 }
 
@@ -391,7 +392,8 @@ h3 {
 
 .authors,
 .venue {
-  margin: 0.18rem 0;
+  margin: 0.1rem 0;
+  font-size: 0.9rem;
 }
 
 .authors { color: #3f423f; }
@@ -412,18 +414,18 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.34rem;
-  margin: 0.42rem 0 0;
+  margin: 0.3rem 0 0;
 }
 
 .pub-links a {
   display: inline-flex;
   align-items: center;
-  padding: 0.12rem 0.45rem;
+  padding: 0.08rem 0.38rem;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: var(--paper-soft);
   color: var(--accent);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
@@ -434,10 +436,10 @@ h3 {
 }
 
 .subsection-title {
-  margin: 1.25rem 0 0.55rem;
+  margin: 1rem 0 0.42rem;
   color: var(--accent);
   font-family: var(--sans);
-  font-size: 1.08rem;
+  font-size: 0.92rem;
   font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -445,23 +447,25 @@ h3 {
 
 .cv-list {
   display: grid;
-  gap: 0.78rem;
+  gap: 0.58rem;
+  font-size: 0.93rem;
 }
 
 .cv-list li {
-  padding-left: 1.05rem;
-  border-left: 4px solid #ead8d6;
+  padding-left: 0.82rem;
+  border-left: 3px solid #ead8d6;
 }
 
 .award-list {
   display: grid;
-  gap: 0.58rem;
+  gap: 0.38rem;
+  font-size: 0.92rem;
 }
 
 .award-list li {
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr);
-  gap: 0.7rem;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 0.52rem;
   align-items: baseline;
 }
 
@@ -472,17 +476,20 @@ h3 {
 
 .timeline {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.45rem;
 }
 
 .timeline li {
   display: grid;
-  grid-template-columns: 132px minmax(0, 1fr);
-  gap: 1rem;
-  padding: 0.95rem 1rem;
-  border: 1px solid rgba(232, 223, 213, 0.95);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 0.82rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+
+.timeline li:last-child {
+  border-bottom: 0;
 }
 
 .tl-date {
