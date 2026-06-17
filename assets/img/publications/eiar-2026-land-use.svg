@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
+  <title id="title">Environmental Impact Assessment Review publication thumbnail</title>
+  <desc id="desc">Stylized land-use optimization map for the EIAR 2026 paper.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7efe8"/>
+      <stop offset="1" stop-color="#e4efe8"/>
+    </linearGradient>
+    <linearGradient id="maroon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#500000"/>
+      <stop offset="1" stop-color="#9b3b2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="450" fill="url(#bg)"/>
+  <g opacity="0.32" stroke="#5f6f62" stroke-width="1">
+    <path d="M0 72H900M0 144H900M0 216H900M0 288H900M0 360H900"/>
+    <path d="M90 0V450M180 0V450M270 0V450M360 0V450M450 0V450M540 0V450M630 0V450M720 0V450M810 0V450"/>
+  </g>
+  <g transform="translate(90 82)">
+    <path d="M42 176L150 82L270 124L354 56L468 118L616 76L690 178L590 268L442 236L332 308L214 248L92 292Z" fill="#ffffff" opacity="0.88" stroke="#b99589" stroke-width="3"/>
+    <path d="M96 186L172 124L246 146L314 102L412 150L540 116L616 180L540 232L436 208L342 254L234 212L142 242Z" fill="#bdd6bd" opacity="0.92"/>
+    <path d="M175 124L247 146L315 102L413 150" fill="none" stroke="#500000" stroke-width="11" stroke-linecap="round"/>
+    <path d="M318 253L437 208L541 232" fill="none" stroke="#d8a442" stroke-width="11" stroke-linecap="round"/>
+    <circle cx="171" cy="124" r="18" fill="url(#maroon)"/>
+    <circle cx="414" cy="150" r="18" fill="#d8a442"/>
+    <circle cx="540" cy="232" r="18" fill="#476f5a"/>
+    <g fill="#500000" opacity="0.82">
+      <rect x="180" y="178" width="44" height="34" rx="4"/>
+      <rect x="235" y="170" width="30" height="42" rx="4"/>
+      <rect x="284" y="184" width="38" height="28" rx="4"/>
+      <rect x="388" y="174" width="34" height="46" rx="4"/>
+    </g>
+  </g>
+  <text x="62" y="62" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#500000">EIAR</text>
+  <text x="62" y="398" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#253326">Multi-scale land-use optimization</text>
+  <text x="62" y="424" font-family="Arial, sans-serif" font-size="16" fill="#5d6760">NSGA-II + PLUS · ecosystem services supply and demand</text>
+</svg>

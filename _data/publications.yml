@@ -1,11 +1,13 @@
-# Publications — newest first
+# Publications — newest first, synced with Google Scholar profile.
 
-- title: "Multi-objective optimization of urban land use across multiple scales: Balancing ecosystem services supply and demand with an integrated NSGA-II–PLUS model"
+- title: "Multi-objective optimization of urban land use across multiple scales: Balancing ecosystem services supply and demand with an integrated NSGA-II-PLUS model"
   authors: "Xiaoyang Liu, <strong>Kaili Zhang</strong>, Weihao Shi, Zhigang Li"
   venue: "Environmental Impact Assessment Review, 121, 108531"
   year: 2026
-  note: ""
+  image: "assets/img/publications/eiar-2026-land-use.svg"
   links:
+    - label: "Article"
+      url: "https://www.sciencedirect.com/science/article/pii/S0195925526002052"
     - label: "DOI"
       url: "https://doi.org/10.1016/j.eiar.2026.108531"
     - label: "Scholar"
@@ -13,21 +15,30 @@
 
 - title: "Impacts and threshold effects of urban human settlements upon job-housing balance in megacities: A case study of Wuhan metropolitan development area"
   authors: "Zhigang Li, <strong>Kaili Zhang</strong>, Xiaoyang Liu, Da Liu"
-  venue: "Journal of Natural Resources, 41(2), 500–515"
+  venue: "Journal of Natural Resources, 41(2), 500-515"
   year: 2026
   note: "In Chinese"
+  image: "assets/img/publications/jnr-2026-job-housing-card.jpg"
   links:
+    - label: "PDF"
+      url: "assets/files/publications/jnr-2026-job-housing.pdf"
+    - label: "Article"
+      url: "https://www.jnr.ac.cn/EN/10.31497/zrzyxb.20260211"
     - label: "DOI"
       url: "https://doi.org/10.31497/zrzyxb.20260211"
     - label: "Scholar"
       url: "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z9rfcV0AAAAJ&pagesize=100&citation_for_view=Z9rfcV0AAAAJ:9yKSN-GCB0IC"
 
-- title: "Urban Texture Identification and Characteristic Analysis Based on Percolation Theory—A Case Study of the Second Ring Road Area in Wuhan City"
+- title: "Urban Texture Identification and Characteristic Analysis Based on Percolation Theory: A Case Study of the Second Ring Road Area in Wuhan City"
   authors: "Shen Yang, Qingming Zhan, <strong>Kaili Zhang</strong>, Hurex Paryzat"
   venue: "Land, 13(5), 717"
   year: 2024
-  note: ""
+  image: "assets/img/publications/land-2024-urban-texture.jpg"
   links:
+    - label: "PDF"
+      url: "https://www.mdpi.com/2073-445X/13/5/717/pdf"
+    - label: "Article"
+      url: "https://www.mdpi.com/2073-445X/13/5/717"
     - label: "DOI"
       url: "https://doi.org/10.3390/land13050717"
     - label: "Scholar"
@@ -37,18 +48,21 @@
   authors: "Wenya Zhai, <strong>Kaili Zhang</strong>, Feicui Gou, Hanbei Cheng, Zhigang Li, Yan Zhang"
   venue: "Ecological Indicators, 154, 110654"
   year: 2023
-  note: ""
+  image: "assets/img/publications/ecolind-2023-graphical-abstract.jpg"
   links:
+    - label: "Article"
+      url: "https://www.sciencedirect.com/science/article/pii/S1470160X23007963"
     - label: "DOI"
       url: "https://doi.org/10.1016/j.ecolind.2023.110654"
     - label: "Scholar"
       url: "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z9rfcV0AAAAJ&pagesize=100&citation_for_view=Z9rfcV0AAAAJ:u5HHmVD_uO8C"
 
-- title: "“共同生产”视角下的城市社区微更新机制探析——以武汉南湖街道为例"
+- title: "\"共同生产\"视角下的城市社区微更新机制探析: 以武汉南湖街道为例"
   authors: "李志刚, 薛瑞爽, <strong>张凯莉</strong>, 郭炎, 李敏睿"
-  venue: "现代城市研究, 10, 98–106"
+  venue: "现代城市研究, 10, 98-106"
   year: 2023
   note: "In Chinese"
+  image: "assets/img/publications/mur-2023-community-renewal.svg"
   links:
     - label: "Scholar"
       url: "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Z9rfcV0AAAAJ&pagesize=100&citation_for_view=Z9rfcV0AAAAJ:u-x6o8ySG0sC"

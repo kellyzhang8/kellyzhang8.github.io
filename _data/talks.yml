@@ -1,13 +1,10 @@
-# Conference talks
+# Presentations
 
-- date: "Mar 2026"
-  title: "Climate Justice Indicators and Actions: A Systematic Literature Review"
-  venue: "2026 Annual Meeting of the American Association of Geographers"
-  location: "San Francisco, California, USA"
-  type: "Oral"
+conferences:
+  - "Zhang, K., Gong, W.* Built Environment Disparities in Post-Wildfire Recovery: Evidence from California Using Cross-View Imagery and Large Language Models. 2026 Association of Collegiate Schools of Planning, October 8-10, 2026, Pittsburgh, Pennsylvania, USA (Oral)."
+  - "Zhang, K., Xu, B. Climate Justice Indicators and Actions: A Systematic Literature Review. 2026 Annual Meeting of American Association of Geographers, March 17-21, 2026, San Francisco, California, USA (Oral)."
+  - "Zhang, K., Xu, B. Higher Neighborhood Ecological Footprint in villages and towns than cities and suburbs in the United States. 2025 Annual Meeting of American Association of Geographers, March 24-28, 2025, Detroit, Michigan, USA (Oral)."
+  - "Zhang, K., Xu, B. Climate Justice Indicators and Actions: A Systematic Literature Review. College of Architecture's 27th Annual Showcase, October 9, 2025, Texas A&M University, College Station, Texas, USA (Poster)."
 
-- date: "Mar 2025"
-  title: "Higher Neighborhood Ecological Footprint in villages and towns than cities and suburbs in the United States"
-  venue: "2025 Annual Meeting of the American Association of Geographers"
-  location: "Detroit, Michigan, USA"
-  type: "Oral"
+workshops:
+  - "Yang, Y., Gong, W., Zhang, K. DisasterVLP: Perceiving Multidimensional Disaster Damages from Street-View Images Using Visual-Language Models. Summer School on Cyberinfrastructure and Disaster Resilience, August 15, 2025, Texas A&M University, College Station, USA (Oral)."
