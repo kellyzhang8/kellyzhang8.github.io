@@ -500,7 +500,9 @@ h3 {
   white-space: nowrap;
 }
 
-.award-list .award-title {
+.award-list span.award-title {
+  color: var(--text);
+  font-weight: 400;
   min-width: 0;
   white-space: nowrap;
 }
@@ -572,11 +574,11 @@ h3 {
 }
 
 .visitor-map-card .mapmyvisitors-map-container {
-  background-color: #f7f4ee !important;
+  background-color: #e8f0f2 !important;
 }
 
 .visitor-map-card .mapmyvisitors-map {
-  filter: saturate(0.38) sepia(0.08) hue-rotate(10deg) brightness(1.11);
+  filter: saturate(0.82) sepia(0.04) hue-rotate(4deg) brightness(1.02);
 }
 
 .visitor-map-card .mapmyvisitors-visitors,
