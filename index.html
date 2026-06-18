@@ -30,7 +30,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/main.css">
   <script type="application/ld+json">
   {
@@ -118,7 +117,7 @@
           <li><span class="news-date">[May 2026]</span><span class="news-body"><strong>Built Environment Disparities in Post-Wildfire Recovery</strong> was accepted by ACSP 2026 in Pittsburgh.</span></li>
           <li><span class="news-date">[Oct 2025]</span><span class="news-body">Presented a poster at the College of Architecture's 27th Annual Showcase at Texas A&amp;M University.</span></li>
           <li><span class="news-date">[Aug 2025]</span><span class="news-body">Presented <strong>DisasterVLP</strong> at the Summer School on Cyberinfrastructure and Disaster Resilience, TAMU.</span></li>
-          <li><span class="news-date">[2025-2026]</span><span class="news-body"><strong>GeoAgent4Disaster</strong> was accepted as an NSF I-GUIDE Spatial AI Challenge project.</span></li>
+          <li><span class="news-date">[2025-2026]</span><span class="news-body"><a href="https://i-guide.io/spatial-ai-challenge-2025-26-accepted-projects/" target="_blank" rel="noopener"><strong>GeoAgent4Disaster</strong></a> was accepted as an NSF I-GUIDE Spatial AI Challenge project.</span></li>
         </ul>
       </section>
 
@@ -206,7 +205,7 @@
         <h2>Awards &amp; Honors</h2>
         <ul class="award-list">
           <li><span>[2026]</span> Travel Grant, LAUP Department, TAMU, $600.</li>
-          <li><span>[2025-2026]</span> NSF I-GUIDE Spatial AI Challenge - GeoAgent4Disaster (Accepted Project).</li>
+          <li><span>[2025-2026]</span> NSF I-GUIDE Spatial AI Challenge - <a href="https://i-guide.io/spatial-ai-challenge-2025-26-accepted-projects/" target="_blank" rel="noopener">GeoAgent4Disaster (Accepted Project)</a>.</li>
           <li><span>[2025]</span> Travel Grant, LAUP Department, TAMU, $600.</li>
           <li><span>[2025]</span> Travel Grant, Summer School on Cyberinfrastructure and Disaster Resilience, TAMU (funded by NSF), $200.</li>
           <li><span>[2024]</span> Outstanding Graduate Student, Wuhan University.</li>
@@ -220,14 +219,10 @@
         </ul>
       </section>
 
-      <section id="visitor-map" class="visitor-map-section is-hidden" aria-hidden="true">
+      <section id="visitor-map" class="visitor-map-section" aria-label="Visitor map">
         <div class="visitor-map-card" aria-label="MapMyVisitors visitor map">
-          <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?d=oBzS6gseW80uCpsDRyW5KB73BYLDooGY9CZckZ4eH7s&amp;cl=ffffff&amp;w=530"></script>
+          <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?d=oBzS6gseW80uCpsDRyW5KB73BYLDooGY9CZckZ4eH7s&amp;cl=ffffff&amp;w=a"></script>
         </div>
-      </section>
-
-      <section id="academic-footprint" class="footprint-section" aria-label="Academic footprint map">
-        <div id="footprint-map" class="footprint-map" role="img" aria-label="Academic footprint map connecting Henan, Wuhan, College Station, Detroit, San Francisco, and Pittsburgh."></div>
       </section>
 
     </main>
@@ -238,51 +233,5 @@
       <p>&copy; 2026 Kaili (Kelly) Zhang. Built with GitHub Pages.</p>
     </div>
   </footer>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    (function () {
-      if (!window.L || !document.getElementById('footprint-map')) return;
-
-      var footprintStops = [
-        { label: 'Henan, China', context: 'Hometown', coords: [34.7657, 113.7536] },
-        { label: 'Wuhan, China', context: 'Wuhan University', coords: [30.5390, 114.3640] },
-        { label: 'College Station, USA', context: 'Texas A&M University', coords: [30.6280, -96.3344] },
-        { label: 'Detroit, USA', context: 'AAG 2025', coords: [42.3314, -83.0458] },
-        { label: 'San Francisco, USA', context: 'AAG 2026', coords: [37.7749, -122.4194] },
-        { label: 'Pittsburgh, USA', context: 'ACSP 2026', coords: [40.4406, -79.9959] }
-      ];
-
-      var map = L.map('footprint-map', {
-        attributionControl: false,
-        scrollWheelZoom: false,
-        zoomControl: true
-      });
-
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18,
-        noWrap: true
-      }).addTo(map);
-
-      var route = footprintStops.map(function (stop) { return stop.coords; });
-      L.polyline(route, {
-        color: '#7b1f1f',
-        weight: 2,
-        opacity: 0.72,
-        dashArray: '4 7'
-      }).addTo(map);
-
-      footprintStops.forEach(function (stop, index) {
-        L.circleMarker(stop.coords, {
-          radius: index === 0 ? 4.8 : 4,
-          color: '#ffffff',
-          weight: 1.4,
-          fillColor: index === 0 ? '#d6a642' : '#500000',
-          fillOpacity: 0.9
-        }).addTo(map).bindTooltip('<strong>' + stop.label + '</strong><br>' + stop.context);
-      });
-
-      map.fitBounds(route, { padding: [16, 16] });
-    }());
-  </script>
 </body>
 </html>
