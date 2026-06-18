@@ -282,8 +282,8 @@ h3 {
 
 .intro-section a {
   border-bottom: 0;
-  color: inherit;
-  font-weight: 600;
+  color: var(--text);
+  font-weight: 800;
 }
 
 .intro-section a:hover {
