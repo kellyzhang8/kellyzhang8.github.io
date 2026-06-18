@@ -45,6 +45,15 @@ a {
 
 a:hover { color: var(--accent-dark); }
 
+a.text-link {
+  color: inherit;
+  font-weight: inherit;
+}
+
+a.text-link:hover {
+  color: var(--accent);
+}
+
 h1, h2, h3 {
   color: #1f1f1f;
   font-family: var(--serif);
@@ -487,6 +496,15 @@ h3 {
   align-items: baseline;
 }
 
+.award-list li.award-one-line {
+  white-space: nowrap;
+}
+
+.award-list .award-title {
+  min-width: 0;
+  white-space: nowrap;
+}
+
 .award-list span {
   color: var(--accent);
   font-weight: 900;
@@ -532,10 +550,10 @@ h3 {
   width: min(560px, 100%);
   margin: 0 auto;
   overflow-x: auto;
-  padding: 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: linear-gradient(180deg, #fbfaf7 0%, #f3eee7 100%);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .visitor-map-card img,
@@ -547,15 +565,18 @@ h3 {
 
 .visitor-map-card #mapmyvisitors-widget {
   overflow: hidden;
-  border-radius: 6px;
+  border: 0 !important;
+  border-radius: 4px;
+  box-shadow: none !important;
+  outline: 0;
 }
 
 .visitor-map-card .mapmyvisitors-map-container {
-  background-color: #eef3ef !important;
+  background-color: #f7f4ee !important;
 }
 
 .visitor-map-card .mapmyvisitors-map {
-  filter: saturate(0.64) sepia(0.08) hue-rotate(18deg) brightness(1.04);
+  filter: saturate(0.38) sepia(0.08) hue-rotate(10deg) brightness(1.11);
 }
 
 .visitor-map-card .mapmyvisitors-visitors,
@@ -608,5 +629,12 @@ h3 {
   .timeline li {
     grid-template-columns: 1fr;
     gap: 0.25rem;
+  }
+
+  .award-list li.award-one-line {
+    grid-template-columns: max-content max-content;
+    gap: 0.5rem;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }
