@@ -520,8 +520,10 @@ h3 {
   display: flex;
   justify-content: center;
   overflow-x: auto;
-  padding: 0.35rem 0 0.15rem;
-  background: #fff;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fbfaf7 0%, #f3eee7 100%);
 }
 
 .visitor-map-card img,
@@ -529,6 +531,24 @@ h3 {
 .visitor-map-card svg,
 .visitor-map-card iframe {
   max-width: 100%;
+}
+
+.visitor-map-card #mapmyvisitors-widget {
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.visitor-map-card .mapmyvisitors-map-container {
+  background-color: #eef3ef !important;
+}
+
+.visitor-map-card .mapmyvisitors-map {
+  filter: saturate(0.64) sepia(0.08) hue-rotate(18deg) brightness(1.04);
+}
+
+.visitor-map-card .mapmyvisitors-visitors,
+.visitor-map-card .mapmyvisitors-date {
+  display: none !important;
 }
 
 .site-footer {
