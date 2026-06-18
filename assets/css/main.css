@@ -516,6 +516,10 @@ h3 {
   margin-top: 1.8rem;
 }
 
+.visitor-map-section.is-hidden {
+  display: none;
+}
+
 .visitor-map-card {
   display: flex;
   justify-content: center;
