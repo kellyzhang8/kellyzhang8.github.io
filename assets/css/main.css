@@ -271,6 +271,15 @@ h3 {
 
 .intro-section h2 { margin-top: 0.25rem; }
 
+.intro-section a {
+  border-bottom: 1px solid rgba(80, 0, 0, 0.24);
+  font-weight: 700;
+}
+
+.intro-section a:hover {
+  border-bottom-color: var(--accent);
+}
+
 .eyebrow {
   margin: 0;
   color: var(--green);
