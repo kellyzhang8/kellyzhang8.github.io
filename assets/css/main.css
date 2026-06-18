@@ -512,6 +512,25 @@ h3 {
 .tl-body span,
 .tl-body small { color: var(--muted); }
 
+.visitor-map-section {
+  margin-top: 1.8rem;
+}
+
+.visitor-map-card {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 0.35rem 0 0.15rem;
+  background: #fff;
+}
+
+.visitor-map-card img,
+.visitor-map-card canvas,
+.visitor-map-card svg,
+.visitor-map-card iframe {
+  max-width: 100%;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
