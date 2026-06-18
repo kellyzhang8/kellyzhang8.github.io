@@ -272,12 +272,18 @@ h3 {
 .intro-section h2 { margin-top: 0.25rem; }
 
 .intro-section a {
-  border-bottom: 1px solid rgba(80, 0, 0, 0.24);
-  font-weight: 700;
+  border-bottom: 0;
+  color: inherit;
+  font-weight: 600;
 }
 
 .intro-section a:hover {
-  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+.intro-name {
+  color: var(--accent);
+  font-weight: 900;
 }
 
 .eyebrow {
@@ -553,6 +559,41 @@ h3 {
 .visitor-map-card .mapmyvisitors-visitors,
 .visitor-map-card .mapmyvisitors-date {
   display: none !important;
+}
+
+.footprint-section {
+  margin-top: 1.5rem;
+}
+
+.footprint-map {
+  width: min(520px, 100%);
+  height: 260px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #eeeeec;
+}
+
+.footprint-map .leaflet-container {
+  font-family: var(--sans);
+}
+
+.footprint-map .leaflet-control-zoom {
+  border: 0;
+  box-shadow: 0 2px 8px rgba(39, 39, 39, 0.08);
+}
+
+.footprint-map .leaflet-control-zoom a {
+  color: var(--accent);
+}
+
+.footprint-map .leaflet-tooltip {
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  box-shadow: 0 4px 12px rgba(39, 39, 39, 0.08);
 }
 
 .site-footer {

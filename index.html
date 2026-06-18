@@ -30,6 +30,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/main.css">
   <script type="application/ld+json">
   {
@@ -103,9 +104,9 @@
 
     <main class="content">
       <section id="about" class="intro-section">
-        <p class="eyebrow">Climate Justice · Ecological Footprint · Spatial Data Science</p>
+        <p class="eyebrow">Climate Justice · Ecological Footprint · Urban Analytics</p>
         <h2>About Me</h2>
-        <p>Greetings! I am <strong>Kaili (Kelly) Zhang</strong>, a Ph.D. student in Urban and Regional Science in the <a href="https://www.arch.tamu.edu/laup/" target="_blank" rel="noopener">Department of Landscape Architecture &amp; Urban Planning</a> at Texas A&amp;M University, advised by <a href="https://scholar.google.com/citations?user=U-Y_y5gAAAAJ&amp;hl=en" target="_blank" rel="noopener">Dr. Boqian Xu</a>. My research interests center on climate justice and ecological footprint, with a focus on how spatial data science, urban analytics, and emerging AI methods can support more equitable and resilient communities.</p>
+        <p>Greetings! I am <strong class="intro-name">Kaili (Kelly) Zhang</strong>, a Ph.D. student in Urban and Regional Science in the <a href="https://www.arch.tamu.edu/laup/" target="_blank" rel="noopener">Department of Landscape Architecture &amp; Urban Planning</a> at Texas A&amp;M University, advised by <a href="https://scholar.google.com/citations?user=U-Y_y5gAAAAJ&amp;hl=en" target="_blank" rel="noopener">Dr. Boqian Xu</a>. My research interests center on climate justice and ecological footprint, with a focus on how spatial data science, urban analytics, and emerging AI methods can support more equitable and resilient communities.</p>
         <p>Before joining Texas A&amp;M, I received my master's and bachelor's degrees in Urban and Rural Planning from the <a href="https://traditional-architecture.org/" target="_blank" rel="noopener">School of Urban Design</a> at Wuhan University, where I was advised by <a href="https://scholar.google.com/citations?user=cjNKF9oAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener">Dr. Zhigang Li</a>. My prior projects examined community governance, eco-friendly low-carbon communities, ecological restoration, and community micro-renewal in Wuhan, which continue to shape my interest in linking environmental change with everyday urban life.</p>
         <p class="updated">Updated on 06/2026</p>
       </section>
@@ -225,6 +226,10 @@
         </div>
       </section>
 
+      <section id="academic-footprint" class="footprint-section" aria-label="Academic footprint map">
+        <div id="footprint-map" class="footprint-map" role="img" aria-label="Academic footprint map connecting Henan, Wuhan, College Station, Detroit, San Francisco, and Pittsburgh."></div>
+      </section>
+
     </main>
   </div>
 
@@ -233,5 +238,51 @@
       <p>&copy; 2026 Kaili (Kelly) Zhang. Built with GitHub Pages.</p>
     </div>
   </footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    (function () {
+      if (!window.L || !document.getElementById('footprint-map')) return;
+
+      var footprintStops = [
+        { label: 'Henan, China', context: 'Hometown', coords: [34.7657, 113.7536] },
+        { label: 'Wuhan, China', context: 'Wuhan University', coords: [30.5390, 114.3640] },
+        { label: 'College Station, USA', context: 'Texas A&M University', coords: [30.6280, -96.3344] },
+        { label: 'Detroit, USA', context: 'AAG 2025', coords: [42.3314, -83.0458] },
+        { label: 'San Francisco, USA', context: 'AAG 2026', coords: [37.7749, -122.4194] },
+        { label: 'Pittsburgh, USA', context: 'ACSP 2026', coords: [40.4406, -79.9959] }
+      ];
+
+      var map = L.map('footprint-map', {
+        attributionControl: false,
+        scrollWheelZoom: false,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+        maxZoom: 18,
+        noWrap: true
+      }).addTo(map);
+
+      var route = footprintStops.map(function (stop) { return stop.coords; });
+      L.polyline(route, {
+        color: '#7b1f1f',
+        weight: 2,
+        opacity: 0.72,
+        dashArray: '4 7'
+      }).addTo(map);
+
+      footprintStops.forEach(function (stop, index) {
+        L.circleMarker(stop.coords, {
+          radius: index === 0 ? 4.8 : 4,
+          color: '#ffffff',
+          weight: 1.4,
+          fillColor: index === 0 ? '#d6a642' : '#500000',
+          fillOpacity: 0.9
+        }).addTo(map).bindTooltip('<strong>' + stop.label + '</strong><br>' + stop.context);
+      });
+
+      map.fitBounds(route, { padding: [16, 16] });
+    }());
+  </script>
 </body>
 </html>
