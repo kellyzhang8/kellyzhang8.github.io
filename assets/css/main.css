@@ -574,11 +574,11 @@ h3 {
 }
 
 .visitor-map-card .mapmyvisitors-map-container {
-  background-color: #e8f0f2 !important;
+  background-color: #edf4f3 !important;
 }
 
 .visitor-map-card .mapmyvisitors-map {
-  filter: saturate(0.82) sepia(0.04) hue-rotate(4deg) brightness(1.02);
+  filter: saturate(0.95) sepia(0.04) hue-rotate(2deg) brightness(1.01) contrast(1.06);
 }
 
 .visitor-map-card .mapmyvisitors-visitors,
