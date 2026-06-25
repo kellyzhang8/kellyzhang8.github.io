@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://kellyzhang8.github.io/</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://kellyzhang8.github.io/assets/img/profile.jpg</image:loc>
+      <image:title>Kaili (Kelly) Zhang</image:title>
+      <image:caption>Portrait of Kaili (Kelly) Zhang, Ph.D. student at Texas A&amp;M University.</image:caption>
+    </image:image>
   </url>
 </urlset>
