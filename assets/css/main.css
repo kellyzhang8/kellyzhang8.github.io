@@ -375,6 +375,10 @@ h3 {
   padding-bottom: 0;
 }
 
+.publication-item.no-figure {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .pub-figure {
   display: block;
   overflow: hidden;
@@ -619,6 +623,10 @@ h3 {
   .publication-item {
     grid-template-columns: 108px minmax(0, 1fr);
     gap: 0.85rem;
+  }
+
+  .publication-item.no-figure {
+    grid-template-columns: 1fr;
   }
 
   .pub-figure {
