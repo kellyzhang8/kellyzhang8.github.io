@@ -547,6 +547,14 @@ h3 {
   background: var(--accent);
 }
 
+.personal-interest-title {
+  color: var(--muted);
+}
+
+.personal-interest-list li::before {
+  background: var(--muted);
+}
+
 .award-list {
   display: grid;
   gap: 0.38rem;
