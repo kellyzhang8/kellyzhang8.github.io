@@ -572,7 +572,6 @@ h3 {
   white-space: nowrap;
 }
 
-.award-list li.award-neutral > span:first-child,
 .award-list li.award-neutral .award-title,
 .award-list li.award-neutral .award-title a {
   color: var(--text);
