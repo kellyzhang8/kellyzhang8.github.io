@@ -568,20 +568,10 @@ h3 {
   align-items: baseline;
 }
 
-.award-list li.award-one-line {
-  white-space: nowrap;
-}
-
-.award-list li.award-neutral .award-title,
-.award-list li.award-neutral .award-title a {
-  color: var(--text);
-}
-
 .award-list span.award-title {
   color: var(--text);
   font-weight: 400;
   min-width: 0;
-  white-space: nowrap;
 }
 
 .award-list span {
@@ -715,10 +705,4 @@ h3 {
     gap: 0.25rem;
   }
 
-  .award-list li.award-one-line {
-    grid-template-columns: max-content max-content;
-    gap: 0.5rem;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
 }
